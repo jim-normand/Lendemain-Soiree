@@ -1,0 +1,16 @@
+{
+  "source": "Unity",
+  "applications": [
+    {
+      "app_key": "application.generated.unity.conav_unity.exe",
+      "launch_type": "url",
+      "url": "steam://launch/",
+      "action_manifest_path": "C:\\Users\\Eric\\Documents\\GitHub\\Conav_Unity\\actions.json",
+      "strings": {
+        "en_us": {
+          "name": "CONAV_Unity [Testing]"
+        }
+      }
+    }
+  ]
+}
