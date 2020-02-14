@@ -1,5 +1,16 @@
 # Alicia 
 
+Scène kqefhkqzhf: 
+
+On a :	- Light
+	- Player -> Script 'Player.cs'
+	- Plane -> pas de scripts
+
+Le script permet a priori de gérer le player, les mains, la position 
+des yeux, position des pieds et des mains et probablementla navigation 
+du player (a tester avec casque et controlleur)
+
+
 # Paul 
 
 # Kilian 
