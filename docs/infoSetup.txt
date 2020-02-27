@@ -7,9 +7,24 @@ On a :	- Light
 	- Plane -> pas de scripts
 
 Le script permet a priori de gérer le player, les mains, la position 
-des yeux, position des pieds et des mains et probablementla navigation 
+des yeux, position des pieds et des mains et probablement la navigation 
 du player (a tester avec casque et controlleur)
 
+Scène main scene:
+
+On a :	- Main Camera
+	- Light
+	- Room : * Walls (tout les murs et sol) -> pas de script
+		 * Objects : o Bed (avec un animator) -> pas de script
+			     o Coffre en bois -> pas de script
+			     o Tapis -> pas de script
+			     o 2 Smartphones -> pas de script
+			     o Lampe -> pas de script
+			     o Table de chevet -> pas de script
+			     o Etagère (avec des livres dont certains ont une animation ouverture/fermeture et un script text)
+			     o Posters -> pas de script
+		 * Porte de sortie -> script ouverture de la porte
+	- Point Light -> pour la lumière de la lampe de chevet
 
 # Paul 
 
