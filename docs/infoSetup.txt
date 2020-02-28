@@ -30,6 +30,22 @@ On a :	- Main Camera
 
 # Kilian 
 
+Scène "telephone interaction" 
+
+- Room : 
+	- hotl_door_small 	: script OpenDoor
+						: 2 audios (ouverture/fermeture)
+						
+	- Smartphone 1 : scripts
+						
+- Teleporting (prefab SteamVR)
+- VRPlayer (prefab SteamVR)
+
+
+Scène "test"
+
+- smarphone (juste le mesh).
+
 # Maxence 
 
 # Benjamin
