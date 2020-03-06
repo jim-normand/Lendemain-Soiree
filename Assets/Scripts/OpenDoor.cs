@@ -13,7 +13,7 @@ public class OpenDoor : MonoBehaviour {
 	private Vector3 defaultRot;
 	private Vector3 openRot;
 	private bool open;
-	private bool enter;
+	private bool enter = true;
 
 	// Use this for initialization
 	void Start () {
@@ -25,17 +25,20 @@ public class OpenDoor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (open) {
-			if (AudioS == false) {
-				gameObject.GetComponent<AudioSource> ().PlayOneShot (OpenAudio);
-				AudioS = true;
-			}
-			transform.eulerAngles = Vector3.Slerp (transform.eulerAngles, openRot, Time.deltaTime * smooth);
+            transform.eulerAngles = Vector3.Slerp (transform.eulerAngles, openRot, Time.deltaTime * smooth);
+            if (AudioS == false)
+            {
+                gameObject.GetComponent<AudioSource>().PlayOneShot(OpenAudio);
+                AudioS = true;
+            }
+            
 		} else {
+            transform.eulerAngles = Vector3.Slerp (transform.eulerAngles, defaultRot, Time.deltaTime * smooth);
 			if (AudioS == true) {
 				gameObject.GetComponent<AudioSource> ().PlayOneShot (CloseAudio);
 				AudioS = false;
 			}
-			transform.eulerAngles = Vector3.Slerp (transform.eulerAngles, defaultRot, Time.deltaTime * smooth);
+			
 
 		}
 		if (Input.GetKeyDown (KeyCode.F) && enter) {
@@ -53,7 +56,7 @@ public class OpenDoor : MonoBehaviour {
     void OnTriggerExit(Collider col)
 {
 	if (col.tag == "Player") {
-		enter = false;
+		//enter = false;
 	}
 }
 }
