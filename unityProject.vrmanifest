@@ -5,10 +5,10 @@
       "app_key": "application.generated.unity.conav_unity.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "D:\\Niquez tous vos grandes daronnes\\Conav_Unity\\actions.json",
+      "action_manifest_path": "D:\\Niquez tous vos grandes daronnes\\VRtest\\actions.json",
       "strings": {
         "en_us": {
-          "name": "CONAV_Unity [Testing]"
+          "name": "VRtest [Testing]"
         }
       }
     }

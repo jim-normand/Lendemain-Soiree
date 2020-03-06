@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - projectile
-  - FxTemporaire
   - button
+  - projectile
+  - zecanvas
   layers:
   - Default
   - TransparentFX

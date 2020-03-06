@@ -30,8 +30,8 @@ public class phoneBehavior : MonoBehaviour
     public bool isLocked = true; 
     public Text tryCode; //Le code entré par l'utilisateur
     public Text screenText;
+    public GameObject canvas;
 
-    private GameObject canvas;
     private buttonBehavior selectedButton;
     private buttonBehavior formerButton;
     private int idCurrentButton;
@@ -69,7 +69,7 @@ public class phoneBehavior : MonoBehaviour
 
         //Initialisation de quelques variables oklm
         isHeld = false;
-        code = "1111";
+        code = "6476";
         tryCode.text = "";
         boutons = new List<buttonBehavior>();
         initWheelOK = true;
@@ -113,7 +113,7 @@ public class phoneBehavior : MonoBehaviour
             //On change le bouton en fonction de l'angle
             SwitchButton(angle);
 
-            //On ajoute un nombre avec le bouton de la main droite
+            //On ajoute un nombre avec le bouton de la main gauche
             if (selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
             {
                 addNumber(idCurrentButton);
@@ -287,6 +287,8 @@ public class phoneBehavior : MonoBehaviour
                 isLocked = false;
                 screenText.color = Color.green;
                 screenText.text = "Noice";
+                TextDisplay message = new TextDisplay();
+                message.EndGame();
             }
 
             else

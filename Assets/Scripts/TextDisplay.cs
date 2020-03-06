@@ -29,12 +29,12 @@ public class TextDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = camera.transform.position + 4.0f * camera.transform.forward;
+        //transform.position = camera.transform.position + 4.0f * camera.transform.forward;
 
         if(firstText)
         {
             frameCounter++;
-            if(frameCounter > 900)
+            if(frameCounter > 600)
             {
                 textObjects[0].color = new Color(textObjects[0].color.r, textObjects[0].color.g, textObjects[0].color.b, textObjects[0].color.a - 0.003f);
                 if(textObjects[0].color.a <= 0)
@@ -75,12 +75,26 @@ public class TextDisplay : MonoBehaviour
         int seconds = Mathf.CeilToInt(timeLeft) % 60;
         if (minutes > 0)
         {
-            textObjects[1].text = minutes.ToString() + "min " + seconds.ToString() + "s";
+            if (seconds >= 10)
+            {
+                textObjects[1].text = minutes.ToString() + " : " + seconds.ToString();
+            }
+            else
+            {
+                textObjects[1].text = minutes.ToString() + " : 0" + seconds.ToString();
+            }
         } else
         {
             textObjects[1].fontSize = 40;
             textObjects[1].color = Color.red;
-            textObjects[1].text = seconds.ToString() + "s";
+            if (seconds >= 10)
+            {
+                textObjects[1].text = seconds.ToString();
+            }
+            else
+            {
+                textObjects[1].text = "0" + seconds.ToString();
+            }
         }
         if(Mathf.RoundToInt(timeLeft) <= 0)
         {
