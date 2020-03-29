@@ -1,4 +1,4 @@
-﻿#define DEBUG
+﻿#define DEBUG 1
 
 using System.Collections;
 using System.Collections.Generic;
