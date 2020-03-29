@@ -1,5 +1,4 @@
-﻿#define DEBUG 1
-
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -324,7 +323,7 @@ public class phoneBehavior : MonoBehaviour
             {
                 isLocked = false;
                 screenText.color = Color.green;
-                screenText.text = "Noice";
+                screenText.text = "True";
                 TextDisplay message = new TextDisplay();
                 message.EndGame();
             }

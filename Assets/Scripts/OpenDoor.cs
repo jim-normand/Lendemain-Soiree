@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Valve.VR.InteractionSystem;
 
 public class OpenDoor : MonoBehaviour {
 
 	public float smooth = 2.0f;
 	public float DoorOpenAngle = 90.0f;
+    private float rayonDoor = 1f;
 
 	public AudioClip OpenAudio;
 	public AudioClip CloseAudio;
@@ -12,20 +14,25 @@ public class OpenDoor : MonoBehaviour {
 
 	private Vector3 defaultRot;
 	private Vector3 openRot;
-	private bool open;
-	private bool enter = true;
+    private Vector3 defaultPos;
+    private Vector3 openPos;
+    private bool open;
+	private bool enter = false;
 
 	// Use this for initialization
 	void Start () {
 		
 			defaultRot = transform.eulerAngles;
 			openRot = new Vector3 (defaultRot.x, defaultRot.y + DoorOpenAngle, defaultRot.z);
-		}
+            defaultPos = transform.position;
+            openPos = new Vector3(defaultPos.x - rayonDoor*(1 - Mathf.Cos((2*Mathf.PI* DoorOpenAngle)/360)), defaultPos.y, defaultPos.z + rayonDoor * Mathf.Sin((2 * Mathf.PI * DoorOpenAngle) / 360));
+        }
 	
 	// Update is called once per frame
 	void Update () {
 		if (open) {
             transform.eulerAngles = Vector3.Slerp (transform.eulerAngles, openRot, Time.deltaTime * smooth);
+            transform.position = Vector3.Slerp(transform.position, openPos, Time.deltaTime * smooth);
             if (AudioS == false)
             {
                 gameObject.GetComponent<AudioSource>().PlayOneShot(OpenAudio);
@@ -41,10 +48,20 @@ public class OpenDoor : MonoBehaviour {
 			
 
 		}
-		if (Input.GetKeyDown (KeyCode.F) && enter) {
-			open = !open;
-		}
-}
+        if (this.GetComponent<Interactable>().isHovering)
+        {
+            enter = true;
+        }
+        else
+        {
+            enter = false;
+        }
+        
+        if (GameObject.FindWithTag("Phone").GetComponent<phoneBehavior>().isLocked == false && enter)
+        {
+            open = !open;
+        }
+    }
 
 	void OnTriggerEnter(Collider col)
 	{
@@ -54,9 +71,9 @@ public class OpenDoor : MonoBehaviour {
 		}
 
     void OnTriggerExit(Collider col)
-{
-	if (col.tag == "Player") {
-		//enter = false;
-	}
-}
+    {
+	    if (col.tag == "Player") {
+		    enter = false;
+	    }
+    }
 }
