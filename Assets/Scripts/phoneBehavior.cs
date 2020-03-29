@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿#define DEBUG
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 using UnityEngine.UI;
+
 
 public class phoneBehavior : MonoBehaviour
 {
@@ -113,6 +116,18 @@ public class phoneBehavior : MonoBehaviour
             //On change le bouton en fonction de l'angle
             SwitchButton(angle);
 
+            // En mode debug
+#if DEBUG
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                SwitchButtonDebug();
+            }
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                addNumber(idCurrentButton);
+            }
+#endif
+
             //On ajoute un nombre avec le bouton de la main gauche
             if (selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
             {
@@ -136,7 +151,30 @@ public class phoneBehavior : MonoBehaviour
 
 
     }
+#if DEBUG
+    public void SwitchButtonDebug()
+    {
+        if (idFormerButton == 12)
+        {
+            idCurrentButton = 1;
+        }
+        else
+        {
+            idCurrentButton = idFormerButton + 1;
+        }
+        // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
+        if (idFormerButton != idCurrentButton)
+        {
+            selectedButton = boutons[idCurrentButton - 1];
+            formerButton = boutons[idFormerButton - 1];
 
+            selectedButton.Select();
+            formerButton.Deselect();
+
+            idFormerButton = idCurrentButton;
+        }
+    }
+#endif
     public void SwitchButton(float angle)
     {
         // Il y a 12 boutons => répartition en 12 zones
