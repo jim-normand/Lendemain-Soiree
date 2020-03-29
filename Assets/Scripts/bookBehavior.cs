@@ -26,14 +26,14 @@ public class bookBehavior : MonoBehaviour
         {
             if(firstHold)
             {
-                anim.Play("bookOpen");
+                anim.Play("bookOpen");      //déclenche l'animation d'ouverture du livre
             }
             
             firstHold = false;
         }
         else if(!firstHold)
         {
-            anim.Play("bookClose");
+            anim.Play("bookClose");         //déclenche l'animation de fermeture du livre
             firstHold = true;
         }
     }

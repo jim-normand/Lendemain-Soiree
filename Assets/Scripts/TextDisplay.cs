@@ -52,6 +52,9 @@ public class TextDisplay : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Affiche le texte de début de partie
+    /// </summary>
     private void StartGame()
     {
         textObjects[0].text = "Vous vous réveillez dans une chambre inconnue...";
@@ -59,6 +62,9 @@ public class TextDisplay : MonoBehaviour
         firstText = true;
     }
 
+    /// <summary>
+    /// Affiche le texte de fin de partie
+    /// </summary>
     public void EndGame()
     {
         textObjects[0].fontSize = 40;
@@ -67,6 +73,9 @@ public class TextDisplay : MonoBehaviour
         timerRunning = false;
     }
 
+    /// <summary>
+    /// Affiche le chronomètre du temps restant pour l'escape game
+    /// </summary>
     private void DisplayTime()
     {
         float timeSinceBeginning = Time.realtimeSinceStartup - initialTime;

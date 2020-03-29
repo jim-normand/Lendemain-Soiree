@@ -48,7 +48,7 @@ public class OpenDoor : MonoBehaviour {
 			
 
 		}
-        if (this.GetComponent<Interactable>().isHovering)
+        if (this.GetComponent<Interactable>().isHovering)   
         {
             enter = true;
         }
@@ -57,7 +57,7 @@ public class OpenDoor : MonoBehaviour {
             enter = false;
         }
         
-        if (GameObject.FindWithTag("Phone").GetComponent<phoneBehavior>().isLocked == false && enter)
+        if (GameObject.FindWithTag("Phone").GetComponent<phoneBehavior>().isLocked == false && enter)   //peut s'ouvrir si on a résolu l'enigme du telephone et qu'on selectionne la porte
         {
             open = !open;
         }

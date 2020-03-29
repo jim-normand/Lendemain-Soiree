@@ -33,11 +33,17 @@ public class buttonBehavior : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Change la variable qui vérifie si le bouton est sélectionné en true
+    /// </summary>
     public void Select()
     {
         this.isSelected = true;
     }
 
+    /// <summary>
+    /// Change la variable qui vérifie si le bouton est sélectionné en false
+    /// </summary>
     public void Deselect()
     {
         this.isSelected = false;

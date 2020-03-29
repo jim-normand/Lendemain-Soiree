@@ -151,6 +151,9 @@ public class phoneBehavior : MonoBehaviour
 
     }
 #if DEBUG
+    /// <summary>
+    /// Change la sélection du bouton [debug]
+    /// </summary>
     public void SwitchButtonDebug()
     {
         if (idFormerButton == 12)
@@ -174,6 +177,10 @@ public class phoneBehavior : MonoBehaviour
         }
     }
 #endif
+    /// <summary>
+    /// Change le bouton sélectionné en fonction de l'angle 
+    /// </summary>
+    /// <param name="angle"></param>
     public void SwitchButton(float angle)
     {
         // Il y a 12 boutons => répartition en 12 zones
@@ -267,7 +274,10 @@ public class phoneBehavior : MonoBehaviour
         }
     }
 
-    
+    /// <summary>
+    /// Permet d'ajouter le chiffre validé (via son id) au code d'essai
+    /// </summary>
+    /// <param name="id"></param>
     public void addNumber(int id) 
     {
 
@@ -338,6 +348,10 @@ public class phoneBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Permet de tester si le code d'essai est juste ou non 
+    /// </summary>
+    /// <param name="trycode"></param>
     public bool tryUnlock(string trycode)
     {
         if(trycode == code)
@@ -351,6 +365,10 @@ public class phoneBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initialise les boutons du téléphone
+    /// </summary>
+    /// <param name="data"></param>
     public void initiateButtonWheel()
     {
         foreach (GameObject i in gObjList)
@@ -362,6 +380,10 @@ public class phoneBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Détruit les boutons du téléphone
+    /// </summary>
+    /// <param name="data"></param>
     public void destroyButtonWheel()
     {
         foreach(Transform child in transform)
