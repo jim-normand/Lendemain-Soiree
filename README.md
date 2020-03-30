@@ -1,6 +1,6 @@
 # Projet COARV - "Lendemain de soirée" 
 
-<img width="1120" alt="iatk_menu" src="/docs/imgs/3.png">
+<img width="1120" alt="iatk_menu" src="/docs/imgs/3.PNG">
 
 ## Prérequis 
 
