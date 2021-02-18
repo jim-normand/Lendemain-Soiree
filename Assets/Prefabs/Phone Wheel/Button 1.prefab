@@ -90,7 +90,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 3737202084646649094}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5000001
   m_Height: 2
   m_Direction: 1
@@ -108,4 +108,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelected: 0
-  outlineShader: {fileID: 4800000, guid: 787d7485aa6482341a9f55fa37fb84f1, type: 3}

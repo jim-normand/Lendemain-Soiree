@@ -1,7 +1,4 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 using UnityEngine.UI;
@@ -11,18 +8,6 @@ public class phoneBehavior : MonoBehaviour
 {
     // Nombre total de boutons
     private const int numButtons = 12;
-    /*public GameObject g1;
-    public GameObject g2;
-    public GameObject g3;
-    public GameObject g4;
-    public GameObject g5;
-    public GameObject g6;
-    public GameObject g7;
-    public GameObject g8;
-    public GameObject g9;
-    public GameObject g10;
-    public GameObject g11;
-    public GameObject g12;*/
 
     //si le smartphone est tenu dans la main du joueur ou pas
     public bool isHeld;  
@@ -32,7 +17,8 @@ public class phoneBehavior : MonoBehaviour
     public SteamVR_Action_Boolean selectNumber;
     public Vector2 menuPosition;
     public bool isLocked = true; 
-    public Text tryCode; //Le code entré par l'utilisateur
+    [Tooltip("Code entered by user.")]
+    public Text tryCode;
     public Text screenText;
     public GameObject canvas;
 
@@ -48,10 +34,11 @@ public class phoneBehavior : MonoBehaviour
     // Le code à trouver pour déverouiller
     private string code; 
     [Tooltip("Array of buttons prefabs")]
-    public GameObject[] buttons;
-    private List<GameObject> gObjList;
-    private List<buttonBehavior> boutons;
-    private Transform originalParent;
+    public GameObject[] prefabButtons;
+    private GameObject[] instancedButtons;
+    //private List<GameObject> gObjList;
+    //private List<buttonBehavior> boutons;
+    //private Transform originalParent;
 
     // Start is called before the first frame update
     void Start()
@@ -60,36 +47,23 @@ public class phoneBehavior : MonoBehaviour
         espacementBoutons = 360 / numButtons;
         rayonBoutons = 0.1f;
 
-        //Ajout des gameobjects à une liste (pour un futur parcours de cette liste)
-        /*gObjList = new List<GameObject>();
-        gObjList.Add(g1);
-        gObjList.Add(g2);
-        gObjList.Add(g3);
-        gObjList.Add(g4);
-        gObjList.Add(g5);
-        gObjList.Add(g6);
-        gObjList.Add(g7);
-        gObjList.Add(g8);
-        gObjList.Add(g9);
-        gObjList.Add(g10);
-        gObjList.Add(g11);
-        gObjList.Add(g12);*/
-
         //Initialisation de quelques variables oklm
         isHeld = false;
         code = "6476";
         tryCode.text = "";
-        boutons = new List<buttonBehavior>();
         initWheelOK = true;
-        originalParent = transform.parent;
         screenText.text = "Code :";
 
         //Par défault, c'est le bouton 'en haut' de la roue qui est sélectionné (bouton correction => g10)
-        //selectedButton = g10.GetComponent<buttonBehavior>();
-        selectedButton = buttons[9].GetComponent<buttonBehavior>();
-        selectedButton.Select();
-        idCurrentButton = 10;
+        instancedButtons = new GameObject[numButtons];
+        // Modifies instancedButtons
+        InitiateButtonWheel();
+        for (int i = 0; i < numButtons; i++)
+            instancedButtons[i].SetActive(false);
+        idCurrentButton = 9;
         idFormerButton = idCurrentButton;
+        selectedButton = instancedButtons[idCurrentButton].GetComponent<buttonBehavior>();
+        selectedButton.Select();
 
         canvas = transform.GetChild(0).gameObject;
         canvas.SetActive(false);
@@ -105,7 +79,9 @@ public class phoneBehavior : MonoBehaviour
         {
             if (initWheelOK)
             {
-                initiateButtonWheel();
+                //initiateButtonWheel();
+                for (int i = 0; i < numButtons; i++)
+                    instancedButtons[i].SetActive(true);
                 initWheelOK = false;
             }
 
@@ -142,20 +118,20 @@ public class phoneBehavior : MonoBehaviour
             }
 
             //Quand on relâche la gâchette on peut rajouter un chiffre
+            // selectNumber.GetStateUp(SteamVR_Input_Sources.LeftHand) permettrait d'effacer UnChiffreEnPlusPasPlus
             if (!selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
             {
                 unChiffreEnPlusPasPlus = true;
             }
         }
-
         else
         {
-            DestroyButtonWheel();
+            //DestroyButtonWheel();
+            for (int i = 0; i < numButtons; i++)
+                instancedButtons[i].SetActive(false);
             initWheelOK = true;
             canvas.SetActive(false);
         }
-
-
 
     }
 #if DEBUG
@@ -164,22 +140,12 @@ public class phoneBehavior : MonoBehaviour
     /// </summary>
     public void SwitchButtonDebug()
     {
-        if (idFormerButton == 12)
-        {
-            idCurrentButton = 1;
-        }
-        else
-        {
-            idCurrentButton = idFormerButton + 1;
-        }
+        idCurrentButton = (idFormerButton + 1) % numButtons;
         // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
         if (idFormerButton != idCurrentButton)
         {
-            //selectedButton = boutons[idCurrentButton - 1];
-            selectedButton = buttons[idCurrentButton - 1].GetComponent<buttonBehavior>();
-            //formerButton = boutons[idFormerButton - 1];
-            formerButton = buttons[idFormerButton - 1].GetComponent<buttonBehavior>();
-            buttons[idFormerButton - 1].GetComponent<buttonBehavior>().Deselect();
+            selectedButton = instancedButtons[idCurrentButton].GetComponent<buttonBehavior>();
+            formerButton = instancedButtons[idFormerButton].GetComponent<buttonBehavior>();
 
             selectedButton.Select();
             formerButton.Deselect();
@@ -272,14 +238,15 @@ public class phoneBehavior : MonoBehaviour
                 idCurrentButton = 10;
             }
         }
+        // Quick fix : if no HMD, menuPosition[0] is NaN
+        if (menuPosition[0] < 0 || menuPosition[0] > 0)
+            idCurrentButton -= 1;
 
         // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
         if (idFormerButton != idCurrentButton)
         {
-            //selectedButton = boutons[idCurrentButton - 1];
-            //formerButton = boutons[idFormerButton - 1];
-            selectedButton = buttons[idCurrentButton - 1].GetComponent<buttonBehavior>();
-            formerButton = buttons[idFormerButton - 1].GetComponent<buttonBehavior>();
+            selectedButton = instancedButtons[idCurrentButton].GetComponent<buttonBehavior>();
+            formerButton = instancedButtons[idFormerButton].GetComponent<buttonBehavior>();
 
             selectedButton.Select();
             formerButton.Deselect();
@@ -299,26 +266,22 @@ public class phoneBehavior : MonoBehaviour
         // Les id 10, 11 et 12 correspondent aux boutons Corriger, Valider et Annuler (respectivement)
         if (tryCode.text.Length < 4 && unChiffreEnPlusPasPlus)
         {
+            unChiffreEnPlusPasPlus = false;
             switch (idCurrentButton)
             {
-                case 11:
+                case 10:
                     isLocked = TryUnlock(tryCode.text);
-                    unChiffreEnPlusPasPlus = false;
                     break;
 
-                case 12:
+                case 11:
                     tryCode.text = "";
-                    unChiffreEnPlusPasPlus = false;
                     break;
                 // Delete last character
-                case 10:
+                case 9:
                     tryCode.text = tryCode.text.Substring(0, tryCode.text.Length - 1);
-                    unChiffreEnPlusPasPlus = false;
                     break;
-
                 default:
                     tryCode.text += id;
-                    unChiffreEnPlusPasPlus = false;
                     break;
             }
         }
@@ -328,17 +291,15 @@ public class phoneBehavior : MonoBehaviour
             // Why is this block ???
             switch (idCurrentButton)
             {
-                case 11:
+                case 10:
                     isLocked = TryUnlock(tryCode.text);
                     unChiffreEnPlusPasPlus = false;
                     break;
-
-                case 12:
+                case 11:
                     tryCode.text = "";
                     unChiffreEnPlusPasPlus = false;
                     break;
-
-                case 10:
+                case 9:
                     tryCode.text = tryCode.text.Substring(0, tryCode.text.Length - 1);
                     unChiffreEnPlusPasPlus = false;
                     break;
@@ -352,7 +313,6 @@ public class phoneBehavior : MonoBehaviour
                 TextDisplay message = new TextDisplay();
                 message.EndGame();
             }
-
             else
             {
                 tryCode.text = "";
@@ -364,10 +324,10 @@ public class phoneBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// Permet de tester si le code d'essai est juste ou non 
+    /// Test si le code d'essai est juste 
     /// </summary>
-    /// <param name="trycode"></param>
-    public bool TryUnlock (string trycode)
+    /// <param name="trycode">Code à tester.</param>
+    public bool TryUnlock(string trycode)
     {
         return trycode == code;
     }
@@ -375,39 +335,13 @@ public class phoneBehavior : MonoBehaviour
     /// <summary>
     /// Initialise les boutons du téléphone
     /// </summary>
-    /// <param name="data"></param>
-    public void initiateButtonWheel()
+    public void InitiateButtonWheel()
     {
-        GameObject button;
         for (int i = 0; i < numButtons; i++)
         {
-            button = Instantiate(buttons[i], transform);
-            button.transform.localPosition = rayonBoutons * new Vector3(Mathf.Cos(Mathf.Deg2Rad * i * espacementBoutons), 0, Mathf.Sin(Mathf.Deg2Rad * i * espacementBoutons));
-            button.transform.localScale /= 3; // = rayonBouton / .1f / 3 ???
-            //boutons.Add(button.GetComponent<buttonBehavior>());
-        }
-        /*foreach (GameObject i in buttons)
-        {
-                GameObject bouton = Instantiate(i, transform);
-                bouton.transform.localPosition = new Vector3(rayonBoutons * Mathf.Cos(Mathf.Deg2Rad * gObjList.IndexOf(i) * espacementBoutons), 0, rayonBoutons * Mathf.Sin(Mathf.Deg2Rad * gObjList.IndexOf(i) * espacementBoutons));
-                bouton.transform.localScale = bouton.transform.localScale / 3;
-                boutons.Add(bouton.GetComponent<buttonBehavior>());
-        }*/
-    }
-
-    /// <summary>
-    /// Détruit les boutons du téléphone
-    /// </summary>
-    /// <param name="data"></param>
-    public void DestroyButtonWheel()
-    {
-        foreach (Transform child in transform)
-        {
-            if (child.tag == "button")
-            {
-                Destroy(child.gameObject);
-                //boutons.Remove(child.GetComponent<buttonBehavior>());
-            }
+            instancedButtons[i] = Instantiate(prefabButtons[i], transform);
+            instancedButtons[i].transform.localPosition = rayonBoutons * new Vector3(Mathf.Cos(Mathf.Deg2Rad * i * espacementBoutons), 0, Mathf.Sin(Mathf.Deg2Rad * i * espacementBoutons));
+            instancedButtons[i].transform.localScale /= 3;
         }
     }
 }
