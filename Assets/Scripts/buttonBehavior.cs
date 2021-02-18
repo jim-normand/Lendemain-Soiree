@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class buttonBehavior : MonoBehaviour
 {
     public bool isSelected;
-    public Shader outlineShader;
+    //public Shader outlineShader;
     private Renderer rend;
     private Shader defaultShader;
     private Shader transparent;
@@ -21,11 +19,10 @@ public class buttonBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isSelected)
+        if (isSelected)
         {
             rend.material.shader = defaultShader;
         }
-
         else
         {
             rend.material.shader = transparent;
@@ -38,7 +35,7 @@ public class buttonBehavior : MonoBehaviour
     /// </summary>
     public void Select()
     {
-        this.isSelected = true;
+        isSelected = true;
     }
 
     /// <summary>
@@ -46,6 +43,6 @@ public class buttonBehavior : MonoBehaviour
     /// </summary>
     public void Deselect()
     {
-        this.isSelected = false;
+        isSelected = false;
     }
 }
