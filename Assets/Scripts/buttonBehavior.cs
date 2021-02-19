@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class buttonBehavior : MonoBehaviour
+public class ButtonBehavior : MonoBehaviour
 {
     public bool isSelected;
     //public Shader outlineShader;
@@ -19,14 +19,14 @@ public class buttonBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isSelected)
+        /*if (isSelected)
         {
             rend.material.shader = defaultShader;
         }
         else
         {
             rend.material.shader = transparent;
-        }
+        }*/
 
     }
 
@@ -36,6 +36,7 @@ public class buttonBehavior : MonoBehaviour
     public void Select()
     {
         isSelected = true;
+        rend.material.shader = defaultShader;
     }
 
     /// <summary>
@@ -44,5 +45,6 @@ public class buttonBehavior : MonoBehaviour
     public void Deselect()
     {
         isSelected = false;
+        rend.material.shader = transparent;
     }
 }

@@ -4,7 +4,7 @@ using Valve.VR.InteractionSystem;
 using UnityEngine.UI;
 
 
-public class phoneBehavior : MonoBehaviour
+public class PhoneBehavior : MonoBehaviour
 {
     // Nombre total de boutons
     private const int numButtons = 12;
@@ -22,8 +22,8 @@ public class phoneBehavior : MonoBehaviour
     public Text screenText;
     public GameObject canvas;
 
-    private buttonBehavior selectedButton;
-    private buttonBehavior formerButton;
+    private ButtonBehavior selectedButton;
+    private ButtonBehavior formerButton;
     private int idCurrentButton;
     private int idFormerButton;
     private float espacementBoutons;
@@ -35,10 +35,8 @@ public class phoneBehavior : MonoBehaviour
     private string code; 
     [Tooltip("Array of buttons prefabs")]
     public GameObject[] prefabButtons;
+    [Tooltip("Array of buttons instances")]
     private GameObject[] instancedButtons;
-    //private List<GameObject> gObjList;
-    //private List<buttonBehavior> boutons;
-    //private Transform originalParent;
 
     // Start is called before the first frame update
     void Start()
@@ -57,16 +55,16 @@ public class phoneBehavior : MonoBehaviour
         //Par défault, c'est le bouton 'en haut' de la roue qui est sélectionné (bouton correction => g10)
         instancedButtons = new GameObject[numButtons];
         // Modifies instancedButtons
-        InitiateButtonWheel();
-        for (int i = 0; i < numButtons; i++)
-            instancedButtons[i].SetActive(false);
+        InstantiateButtonsWheel();
+        DisableButtonsWheel();
         idCurrentButton = 9;
         idFormerButton = idCurrentButton;
-        selectedButton = instancedButtons[idCurrentButton].GetComponent<buttonBehavior>();
+        selectedButton = instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>();
         selectedButton.Select();
 
         canvas = transform.GetChild(0).gameObject;
         canvas.SetActive(false);
+        GetComponent<Throwable>().onPickUp.AddListener(EnableButtonsWheel);
     }
 
     // Update is called once per frame
@@ -79,9 +77,7 @@ public class phoneBehavior : MonoBehaviour
         {
             if (initWheelOK)
             {
-                //initiateButtonWheel();
-                for (int i = 0; i < numButtons; i++)
-                    instancedButtons[i].SetActive(true);
+                //EnableButtonsWheel();
                 initWheelOK = false;
             }
 
@@ -144,8 +140,8 @@ public class phoneBehavior : MonoBehaviour
         // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
         if (idFormerButton != idCurrentButton)
         {
-            selectedButton = instancedButtons[idCurrentButton].GetComponent<buttonBehavior>();
-            formerButton = instancedButtons[idFormerButton].GetComponent<buttonBehavior>();
+            selectedButton = instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>();
+            formerButton = instancedButtons[idFormerButton].GetComponent<ButtonBehavior>();
 
             selectedButton.Select();
             formerButton.Deselect();
@@ -245,8 +241,8 @@ public class phoneBehavior : MonoBehaviour
         // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
         if (idFormerButton != idCurrentButton)
         {
-            selectedButton = instancedButtons[idCurrentButton].GetComponent<buttonBehavior>();
-            formerButton = instancedButtons[idFormerButton].GetComponent<buttonBehavior>();
+            selectedButton = instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>();
+            formerButton = instancedButtons[idFormerButton].GetComponent<ButtonBehavior>();
 
             selectedButton.Select();
             formerButton.Deselect();
@@ -335,7 +331,7 @@ public class phoneBehavior : MonoBehaviour
     /// <summary>
     /// Initialise les boutons du téléphone
     /// </summary>
-    public void InitiateButtonWheel()
+    public void InstantiateButtonsWheel()
     {
         for (int i = 0; i < numButtons; i++)
         {
@@ -343,5 +339,24 @@ public class phoneBehavior : MonoBehaviour
             instancedButtons[i].transform.localPosition = rayonBoutons * new Vector3(Mathf.Cos(Mathf.Deg2Rad * i * espacementBoutons), 0, Mathf.Sin(Mathf.Deg2Rad * i * espacementBoutons));
             instancedButtons[i].transform.localScale /= 3;
         }
+    }
+
+    public void SetWheelActive(bool state)
+    {
+        for (int i = 0; i < numButtons; i++)
+            instancedButtons[i].SetActive(state);
+    }
+
+    /// <summary>
+    /// Make the buttons appear
+    /// </summary>
+    public void EnableButtonsWheel()
+    {
+        SetWheelActive(true);
+    }
+
+    public void DisableButtonsWheel()
+    {
+        SetWheelActive(false);
     }
 }

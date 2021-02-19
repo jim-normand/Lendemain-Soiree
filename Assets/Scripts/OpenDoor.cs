@@ -14,12 +14,12 @@ public class OpenDoor : MonoBehaviour {
     private bool open;
 	private bool enter = false;
 
-    private phoneBehavior phoneScript;
+    private PhoneBehavior phoneScript;
 
 	// Use this for initialization
 	void Start () {
         rotateAnchor = transform.parent;
-        phoneScript = GameObject.FindWithTag("Phone").GetComponent<phoneBehavior>();
+        phoneScript = GameObject.FindWithTag("Phone").GetComponent<PhoneBehavior>();
     }
 	
 	// Update is called once per frame
