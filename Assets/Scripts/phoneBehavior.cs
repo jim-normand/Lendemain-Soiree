@@ -57,10 +57,10 @@ public class PhoneBehavior : MonoBehaviour
         // Modifies instancedButtons
         InstantiateButtonsWheel();
         DisableButtonsWheel();
-        idCurrentButton = 9;
+        idCurrentButton = 1;
         idFormerButton = idCurrentButton;
         instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>().Select();
-        //selectedButton.Select();
+        angle = 0;
 
         canvas = transform.GetChild(0).gameObject;
         canvas.SetActive(false);
@@ -88,30 +88,45 @@ public class PhoneBehavior : MonoBehaviour
             // On récupère la position du pouce sur le trackpad de la main droite
             menuPosition = menuScroll.GetAxis(SteamVR_Input_Sources.RightHand);
 
-            // On calcule l'angle
-            angle = Mathf.Atan(menuPosition[0] / menuPosition[1]);
-            // Mathf.Atan2(menuPosition[0], menuPosition[1]) plus sûr
+            // Angle on trackpad
+            float temp = Mathf.Atan(menuPosition[0] / menuPosition[1]);
+            // temp = Mathf.Atan2(menuPosition[0], menuPosition[1]) plus sûr
 
-            //On change le bouton en fonction de l'angle
-            SwitchButton(angle);
+            // Quick fix whe no HMD connected
+            if (!float.IsNaN(temp) && !float.IsInfinity(temp)) {
+                // On change le bouton en fonction de l'angle
+                angle = temp;
+                SwitchButton(angle); 
+            } 
+            else
+            {
+                angle += Input.GetAxis("Mouse ScrollWheel") * 2;
+                angle %= 2 * Mathf.PI;
+                SwitchButton(angle);
+            }
 
             // En mode debug
 #if DEBUG
-            if(Input.GetKeyDown(KeyCode.Space))
+            if(Input.GetKeyUp(KeyCode.Space))
             {
-                SwitchButtonDebug();
+                AddNumber(idCurrentButton);
             }
 
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyUp(KeyCode.Return))
             {
-                AddNumber(idCurrentButton + 1);
+                AddNumber(idCurrentButton);
             }
+            for (int i = 0; i < 9; i++)
+                if (Input.GetKeyUp(KeyCode.Alpha1 + i))
+                    AddNumber(i);
+            if (Input.GetKeyUp(KeyCode.Backspace))
+                AddNumber(9);
 #endif
 
             //On ajoute un nombre avec le bouton de la main gauche
             if (selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
             {
-                AddNumber(idCurrentButton + 1);
+                AddNumber(idCurrentButton);
             }
 
             //Quand on relâche la gâchette on peut rajouter un chiffre
@@ -123,7 +138,6 @@ public class PhoneBehavior : MonoBehaviour
         }
         else
         {
-            //DisableButtonsWheel();
             initWheelOK = true;
             canvas.SetActive(false);
         }
@@ -136,13 +150,10 @@ public class PhoneBehavior : MonoBehaviour
     public void SwitchButtonDebug()
     {
         idCurrentButton = (idFormerButton + 1) % numButtons;
-        // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
         
+        // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
         instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>().Select();
         instancedButtons[idFormerButton].GetComponent<ButtonBehavior>().Deselect();
-
-        //selectedButton.Select();
-        //formerButton.Deselect();
 
         idFormerButton = idCurrentButton;
     }
@@ -155,8 +166,13 @@ public class PhoneBehavior : MonoBehaviour
     {
         // Il y a 12 boutons => répartition en 12 zones
         // De manière empirique : on a regardé l'angle calculé sur l'inspecteur en runtime pour savoir quel id correspond à quel angle
-        //Debug.Log(angle * Mathf.Rad2Deg);
-        if (menuPosition[0] >= 0)
+        idCurrentButton = Mathf.RoundToInt(angle / 2 / Mathf.PI * numButtons);
+        // We use entire division to come back in ]-numButtons;numButtons[ interval 
+        idCurrentButton -= idCurrentButton / numButtons * numButtons;
+        // Then we clamp to [0; numButtons[
+        if (idCurrentButton < 0)
+            idCurrentButton += numButtons;
+        /*if (menuPosition[0] >= 0)
         {
             if (0.0f < angle && angle <= Mathf.PI / 12)
             {
@@ -231,18 +247,12 @@ public class PhoneBehavior : MonoBehaviour
                 idCurrentButton = 10;
             }
         }
-        // Quick fix : if no HMD, menuPosition[0] is NaN
-        if (menuPosition[0] < 0 || menuPosition[0] > 0)
-            idCurrentButton -= 1;
-
+        */
         // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
         if (idFormerButton != idCurrentButton)
         {
             instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>().Select();
             instancedButtons[idFormerButton].GetComponent<ButtonBehavior>().Deselect();
-
-            //selectedButton.Select();
-            //formerButton.Deselect();
 
             idFormerButton = idCurrentButton;
         }
@@ -254,24 +264,23 @@ public class PhoneBehavior : MonoBehaviour
     /// <param name="id"></param>
     public void AddNumber(int id) 
     {
-
+        id = (id + 1) % numButtons;
         //Si on appuie sur la gâchette de la main gauche, alors on valide l'entrée d'un chiffre du code
         // Les id 10, 11 et 12 correspondent aux boutons Corriger, Valider et Annuler (respectivement)
         if (tryCode.text.Length < 4 && unChiffreEnPlusPasPlus)
         {
             unChiffreEnPlusPasPlus = false;
-            switch (idCurrentButton)
+            switch (id)
             {
+                // Delete last character
                 case 10:
-                    isLocked = TryUnlock(tryCode.text);
+                    tryCode.text = tryCode.text.Substring(0, tryCode.text.Length - 1);
                     break;
-
                 case 11:
                     tryCode.text = "";
                     break;
-                // Delete last character
-                case 9:
-                    tryCode.text = tryCode.text.Substring(0, tryCode.text.Length - 1);
+                case 0:
+                    isLocked = TryUnlock(tryCode.text);
                     break;
                 default:
                     tryCode.text += id;
@@ -282,18 +291,18 @@ public class PhoneBehavior : MonoBehaviour
         if (tryCode.text.Length == 4) 
         {
             // Why is this block ???
-            switch (idCurrentButton)
+            switch (id)
             {
                 case 10:
-                    isLocked = TryUnlock(tryCode.text);
+                    tryCode.text = tryCode.text.Substring(0, tryCode.text.Length - 1);
                     unChiffreEnPlusPasPlus = false;
                     break;
                 case 11:
                     tryCode.text = "";
                     unChiffreEnPlusPasPlus = false;
                     break;
-                case 9:
-                    tryCode.text = tryCode.text.Substring(0, tryCode.text.Length - 1);
+                case 0:
+                    isLocked = TryUnlock(tryCode.text);
                     unChiffreEnPlusPasPlus = false;
                     break;
             }
