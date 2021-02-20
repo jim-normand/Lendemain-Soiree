@@ -9,11 +9,12 @@ public class ButtonBehavior : MonoBehaviour
     private Shader transparent;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rend = GetComponent<Renderer>();
         transparent = Shader.Find("Unlit/Transparent");
         defaultShader = Shader.Find("Standard");
+        Deselect();
     }
 
     // Update is called once per frame

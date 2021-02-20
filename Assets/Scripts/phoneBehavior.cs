@@ -22,8 +22,8 @@ public class PhoneBehavior : MonoBehaviour
     public Text screenText;
     public GameObject canvas;
 
-    private ButtonBehavior selectedButton;
-    private ButtonBehavior formerButton;
+    //private ButtonBehavior selectedButton;
+    //private ButtonBehavior formerButton;
     private int idCurrentButton;
     private int idFormerButton;
     private float espacementBoutons;
@@ -59,12 +59,13 @@ public class PhoneBehavior : MonoBehaviour
         DisableButtonsWheel();
         idCurrentButton = 9;
         idFormerButton = idCurrentButton;
-        selectedButton = instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>();
-        selectedButton.Select();
+        instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>().Select();
+        //selectedButton.Select();
 
         canvas = transform.GetChild(0).gameObject;
         canvas.SetActive(false);
         GetComponent<Throwable>().onPickUp.AddListener(EnableButtonsWheel);
+        GetComponent<Throwable>().onDetachFromHand.AddListener(DisableButtonsWheel);
     }
 
     // Update is called once per frame
@@ -103,14 +104,14 @@ public class PhoneBehavior : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                AddNumber(idCurrentButton);
+                AddNumber(idCurrentButton + 1);
             }
 #endif
 
             //On ajoute un nombre avec le bouton de la main gauche
             if (selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
             {
-                AddNumber(idCurrentButton);
+                AddNumber(idCurrentButton + 1);
             }
 
             //Quand on relâche la gâchette on peut rajouter un chiffre
@@ -122,9 +123,7 @@ public class PhoneBehavior : MonoBehaviour
         }
         else
         {
-            //DestroyButtonWheel();
-            for (int i = 0; i < numButtons; i++)
-                instancedButtons[i].SetActive(false);
+            //DisableButtonsWheel();
             initWheelOK = true;
             canvas.SetActive(false);
         }
@@ -138,16 +137,14 @@ public class PhoneBehavior : MonoBehaviour
     {
         idCurrentButton = (idFormerButton + 1) % numButtons;
         // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
-        if (idFormerButton != idCurrentButton)
-        {
-            selectedButton = instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>();
-            formerButton = instancedButtons[idFormerButton].GetComponent<ButtonBehavior>();
+        
+        instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>().Select();
+        instancedButtons[idFormerButton].GetComponent<ButtonBehavior>().Deselect();
 
-            selectedButton.Select();
-            formerButton.Deselect();
+        //selectedButton.Select();
+        //formerButton.Deselect();
 
-            idFormerButton = idCurrentButton;
-        }
+        idFormerButton = idCurrentButton;
     }
 #endif
     /// <summary>
@@ -241,11 +238,11 @@ public class PhoneBehavior : MonoBehaviour
         // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
         if (idFormerButton != idCurrentButton)
         {
-            selectedButton = instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>();
-            formerButton = instancedButtons[idFormerButton].GetComponent<ButtonBehavior>();
+            instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>().Select();
+            instancedButtons[idFormerButton].GetComponent<ButtonBehavior>().Deselect();
 
-            selectedButton.Select();
-            formerButton.Deselect();
+            //selectedButton.Select();
+            //formerButton.Deselect();
 
             idFormerButton = idCurrentButton;
         }
