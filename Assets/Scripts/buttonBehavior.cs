@@ -2,8 +2,6 @@
 
 public class ButtonBehavior : MonoBehaviour
 {
-    public bool isSelected;
-    //public Shader outlineShader;
     private Renderer rend;
     private Shader defaultShader;
     private Shader transparent;
@@ -20,14 +18,6 @@ public class ButtonBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (isSelected)
-        {
-            rend.material.shader = defaultShader;
-        }
-        else
-        {
-            rend.material.shader = transparent;
-        }*/
 
     }
 
@@ -36,7 +26,6 @@ public class ButtonBehavior : MonoBehaviour
     /// </summary>
     public void Select()
     {
-        isSelected = true;
         rend.material.shader = defaultShader;
     }
 
@@ -45,7 +34,6 @@ public class ButtonBehavior : MonoBehaviour
     /// </summary>
     public void Deselect()
     {
-        isSelected = false;
         rend.material.shader = transparent;
     }
 }

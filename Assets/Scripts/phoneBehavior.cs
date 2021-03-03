@@ -22,8 +22,6 @@ public class PhoneBehavior : MonoBehaviour
     public Text screenText;
     public GameObject canvas;
 
-    //private ButtonBehavior selectedButton;
-    //private ButtonBehavior formerButton;
     private int idCurrentButton;
     private int idFormerButton;
     private float espacementBoutons;
@@ -78,7 +76,6 @@ public class PhoneBehavior : MonoBehaviour
         {
             if (initWheelOK)
             {
-                //EnableButtonsWheel();
                 initWheelOK = false;
             }
 
@@ -89,8 +86,7 @@ public class PhoneBehavior : MonoBehaviour
             menuPosition = menuScroll.GetAxis(SteamVR_Input_Sources.RightHand);
 
             // Angle on trackpad
-            float temp = Mathf.Atan(menuPosition[0] / menuPosition[1]);
-            // temp = Mathf.Atan2(menuPosition[0], menuPosition[1]) plus sûr
+            float temp = Mathf.Atan2(menuPosition[0], menuPosition[1]);
 
             // Quick fix whe no HMD connected
             if (!float.IsNaN(temp) && !float.IsInfinity(temp)) {
@@ -172,82 +168,6 @@ public class PhoneBehavior : MonoBehaviour
         // Then we clamp to [0; numButtons[
         if (idCurrentButton < 0)
             idCurrentButton += numButtons;
-        /*if (menuPosition[0] >= 0)
-        {
-            if (0.0f < angle && angle <= Mathf.PI / 12)
-            {
-                idCurrentButton = 10;
-            }
-
-            if (Mathf.PI / 12 < angle && angle <= 3 * Mathf.PI / 12)
-            {
-                idCurrentButton = 9;
-            }
-
-            if (3*Mathf.PI / 12 < angle && angle <= 5 *Mathf.PI / 12)
-            {
-                idCurrentButton = 8;
-            }
-
-            if ((5 * Mathf.PI / 12 < angle && angle <= Mathf.PI / 2) || (-Mathf.PI / 2 <= angle && angle <= -5 * Mathf.PI / 12))
-            {
-                idCurrentButton = 7;
-            }
-
-            if (-5 * Mathf.PI / 12 < angle && angle <= -3 * Mathf.PI / 12)
-            {
-                idCurrentButton = 6;
-            }
-
-            if (-3 * Mathf.PI / 12 < angle && angle <= -Mathf.PI / 12)
-            {
-                idCurrentButton = 5;
-            }
-
-            if (-Mathf.PI / 12 < angle && angle <= 0.0)
-            {
-                idCurrentButton = 4;
-            }
-        }
-
-        if (menuPosition[0] < 0)
-        {
-            if (0.0f < angle && angle <= Mathf.PI / 12)
-            {
-                idCurrentButton = 4;
-            }
-
-            if (Mathf.PI / 12 < angle && angle <= 3 * Mathf.PI / 12)
-            {
-                idCurrentButton = 3;
-            }
-
-            if (3 * Mathf.PI / 12 < angle && angle <= 5 * Mathf.PI / 12)
-            {
-                idCurrentButton = 2;
-            }
-
-            if ((5 * Mathf.PI / 12 < angle && angle <= Mathf.PI / 2) || (-Mathf.PI / 2 <= angle && angle <= -5 * Mathf.PI / 12))
-            {
-                idCurrentButton = 1;
-            }
-
-            if (-5 * Mathf.PI / 12 < angle && angle <= -3 * Mathf.PI / 12)
-            {
-                idCurrentButton = 12;
-            }
-
-            if (-3 * Mathf.PI / 12 < angle && angle <= -Mathf.PI / 12)
-            {
-                idCurrentButton = 11;
-            }
-
-            if (-Mathf.PI / 12 < angle && angle <= 0.0)
-            {
-                idCurrentButton = 10;
-            }
-        }
-        */
         // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
         if (idFormerButton != idCurrentButton)
         {
@@ -266,7 +186,7 @@ public class PhoneBehavior : MonoBehaviour
     {
         id = (id + 1) % numButtons;
         //Si on appuie sur la gâchette de la main gauche, alors on valide l'entrée d'un chiffre du code
-        // Les id 10, 11 et 12 correspondent aux boutons Corriger, Valider et Annuler (respectivement)
+        // Les id 10, 11 et 0 correspondent aux boutons Corriger, Valider et Annuler (respectivement)
         if (tryCode.text.Length < 4 && unChiffreEnPlusPasPlus)
         {
             unChiffreEnPlusPasPlus = false;
