@@ -66,10 +66,12 @@ public class PhoneBehavior : MonoBehaviour
         GetComponent<Throwable>().onDetachFromHand.AddListener(DisableButtonsWheel);
     }
 
+
     // Update is called once per frame
     void Update()
     {
-        isHeld = GetComponent<Throwable>().GetAttached();
+        //GetComponent<Throwable>().attached
+        //isHeld = GetComponent<Throwable>().GetAttached();
 
         // Si on prend le smartphone, alors la roue de choix du code apparaît
         if (isHeld)
@@ -83,18 +85,21 @@ public class PhoneBehavior : MonoBehaviour
             canvas.SetActive(true);
 
             // On récupère la position du pouce sur le trackpad de la main droite
-            menuPosition = menuScroll.GetAxis(SteamVR_Input_Sources.RightHand);
+            try
+            {
+                menuPosition = menuScroll.GetAxis(SteamVR_Input_Sources.RightHand);
 
-            // Angle on trackpad
-            float temp = Mathf.Atan2(menuPosition[0], menuPosition[1]);
+                // Angle on trackpad
+                float temp = Mathf.Atan2(menuPosition[0], menuPosition[1]);
 
-            // Quick fix whe no HMD connected
-            if (!float.IsNaN(temp) && !float.IsInfinity(temp)) {
-                // On change le bouton en fonction de l'angle
-                angle = temp;
-                SwitchButton(angle); 
-            } 
-            else
+                // Quick fix whe no HMD connected
+                if (!float.IsNaN(temp) && !float.IsInfinity(temp) && false)
+                {
+                    // On change le bouton en fonction de l'angle
+                    angle = temp;
+                    SwitchButton(angle);
+                }
+            } catch
             {
                 angle += Input.GetAxis("Mouse ScrollWheel") * 2;
                 angle %= 2 * Mathf.PI;
@@ -120,17 +125,26 @@ public class PhoneBehavior : MonoBehaviour
 #endif
 
             //On ajoute un nombre avec le bouton de la main gauche
-            if (selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
+            //device = Valve.VR.SteamVR_Controller.Input(Valve.VR.OpenVR.k_unTrackedDeviceIndex_Hmd);
+            // true si casque ready
+            //Debug.Log(SteamVR.connected[0] && !SteamVR.initializing && !SteamVR.calibrating && !SteamVR.outOfRange);
+            try
             {
-                AddNumber(idCurrentButton);
+                if (selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
+                {
+                    AddNumber(idCurrentButton);
+                }
+
+                //Quand on relâche la gâchette on peut rajouter un chiffre
+                // selectNumber.GetStateUp(SteamVR_Input_Sources.LeftHand) permettrait d'effacer UnChiffreEnPlusPasPlus
+                if (!selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
+                {
+                    unChiffreEnPlusPasPlus = true;
+                }
+            }
+            catch { 
             }
 
-            //Quand on relâche la gâchette on peut rajouter un chiffre
-            // selectNumber.GetStateUp(SteamVR_Input_Sources.LeftHand) permettrait d'effacer UnChiffreEnPlusPasPlus
-            if (!selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
-            {
-                unChiffreEnPlusPasPlus = true;
-            }
         }
         else
         {
@@ -279,10 +293,12 @@ public class PhoneBehavior : MonoBehaviour
     public void EnableButtonsWheel()
     {
         SetWheelActive(true);
+        isHeld = true;
     }
 
     public void DisableButtonsWheel()
     {
         SetWheelActive(false);
+        isHeld = false;
     }
 }

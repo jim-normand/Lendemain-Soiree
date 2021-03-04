@@ -602,6 +602,21 @@ PrefabInstance:
       propertyPath: m_Lightmapping
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 108685276935522810, guid: 2c4bac5dc223a6143814698d0fdbeffc,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: -6.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 108685276935522810, guid: 2c4bac5dc223a6143814698d0fdbeffc,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 1.6502e-41
+      objectReference: {fileID: 0}
+    - target: {fileID: 108685276935522810, guid: 2c4bac5dc223a6143814698d0fdbeffc,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c4bac5dc223a6143814698d0fdbeffc, type: 3}
 --- !u!4 &160216324 stripped
@@ -1521,6 +1536,7 @@ MonoBehaviour:
   handFollowTransform: 1
   highlightOnHover: 1
   hideHighlight: []
+  hoverPriority: 0
 --- !u!65 &586155905
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1836,6 +1852,7 @@ MonoBehaviour:
   handFollowTransform: 1
   highlightOnHover: 1
   hideHighlight: []
+  hoverPriority: 0
 --- !u!1001 &605239914
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2932,6 +2949,7 @@ MonoBehaviour:
   handFollowTransform: 1
   highlightOnHover: 1
   hideHighlight: []
+  hoverPriority: 0
 --- !u!1 &1013633425
 GameObject:
   m_ObjectHideFlags: 0
@@ -3456,13 +3474,13 @@ PrefabInstance:
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1246800959}
+      objectReference: {fileID: 0}
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -3471,12 +3489,12 @@ PrefabInstance:
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
@@ -3486,7 +3504,7 @@ PrefabInstance:
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cad9378a4767ef409b3efa1aa359026, type: 3}
@@ -3814,12 +3832,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1234142594}
   m_Mesh: {fileID: 4300006, guid: 605c806a9eb55da48bd5426a1633f9fb, type: 3}
---- !u!1 &1246800959 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -2559332865646562877, guid: 00ed06645a8b39a46a1debc601e0f308,
-    type: 3}
-  m_PrefabInstance: {fileID: 656306891}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1280643092
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5689,6 +5701,7 @@ MonoBehaviour:
   handFollowTransform: 1
   highlightOnHover: 1
   hideHighlight: []
+  hoverPriority: 0
 --- !u!1 &1765222298 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100020, guid: 0882de763878e434883f657c2758a22b,
@@ -5752,7 +5765,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 7.152e-42, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -6067,7 +6080,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 1.5723e-41, z: 0, w: -18.5}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -6313,6 +6326,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Shadows.m_Type
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 108685276935522810, guid: 2c4bac5dc223a6143814698d0fdbeffc,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: -11.278076
+      objectReference: {fileID: 0}
+    - target: {fileID: 108685276935522810, guid: 2c4bac5dc223a6143814698d0fdbeffc,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 6e-45
+      objectReference: {fileID: 0}
+    - target: {fileID: 108685276935522810, guid: 2c4bac5dc223a6143814698d0fdbeffc,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 9e-44
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c4bac5dc223a6143814698d0fdbeffc, type: 3}
@@ -6936,6 +6964,7 @@ MonoBehaviour:
   handFollowTransform: 1
   highlightOnHover: 1
   hideHighlight: []
+  hoverPriority: 0
 --- !u!65 &2090776459
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7709,7 +7738,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 4.5905e-41, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 2.8575e-41, z: 0, w: 1}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
