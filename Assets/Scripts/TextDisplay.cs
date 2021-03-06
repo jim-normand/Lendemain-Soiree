@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class TextDisplay : MonoBehaviour
 {
-    public Camera camera;
     public float numberOfMinutes;
 
     Text[] textObjects;
