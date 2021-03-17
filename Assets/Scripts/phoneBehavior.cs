@@ -15,8 +15,11 @@ public class PhoneBehavior : MonoBehaviour
     public SteamVR_ActionSet actionSet;
     public SteamVR_Action_Vector2 menuScroll;
     public SteamVR_Action_Boolean selectNumber;
+    public SteamVR_Input test;
     public Vector2 menuPosition;
-    public bool isLocked = true; 
+    public bool isLocked = true;
+    [Tooltip("End game message.")]
+    public TextDisplay message;
     [Tooltip("Code entered by user.")]
     public Text tryCode;
     public Text screenText;
@@ -36,6 +39,13 @@ public class PhoneBehavior : MonoBehaviour
     [Tooltip("Array of buttons instances")]
     private GameObject[] instancedButtons;
 
+    public void TestInput(SteamVR_Behaviour_Vector2 vec, SteamVR_Input_Sources device, Vector2 unk1, Vector2 unk2)
+    {
+        Debug.Log("Input: " + vec);
+        Debug.Log("Device: " + device);
+        Debug.Log("unk1: " + unk1 + " unk2: " + unk2);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +53,6 @@ public class PhoneBehavior : MonoBehaviour
         espacementBoutons = 360 / numButtons;
         rayonBoutons = 0.1f;
 
-        //Initialisation de quelques variables oklm
         isHeld = false;
         code = "6476";
         tryCode.text = "";
@@ -62,8 +71,8 @@ public class PhoneBehavior : MonoBehaviour
 
         canvas = transform.GetChild(0).gameObject;
         canvas.SetActive(false);
-        GetComponent<Throwable>().onPickUp.AddListener(EnableButtonsWheel);
-        GetComponent<Throwable>().onDetachFromHand.AddListener(DisableButtonsWheel);
+        //GetComponent<Throwable>().onPickUp.AddListener(EnableButtonsWheel);
+        //GetComponent<Throwable>().onDetachFromHand.AddListener(DisableButtonsWheel);
     }
 
 
@@ -90,7 +99,10 @@ public class PhoneBehavior : MonoBehaviour
                 menuPosition = menuScroll.GetAxis(SteamVR_Input_Sources.RightHand);
 
                 // Angle on trackpad
-                float temp = Mathf.Atan2(menuPosition[0], menuPosition[1]);
+                float temp = Mathf.Atan2(menuPosition[0], menuPosition[1]);                
+                Debug.Log(SteamVR_Actions.default_MenuScrolle.GetAxis(SteamVR_Input_Sources.RightHand));
+                Debug.Log(menuScroll.GetAxis(SteamVR_Input_Sources.LeftHand));
+                Debug.Log(menuScroll.GetAxis(SteamVR_Input_Sources.RightHand));
 
                 // Quick fix whe no HMD connected
                 if (!float.IsNaN(temp) && !float.IsInfinity(temp) && false)
@@ -106,7 +118,7 @@ public class PhoneBehavior : MonoBehaviour
                 SwitchButton(angle);
             }
 
-            // En mode debug
+            // Contrôle classique : espace, touche retour, et chiffres
 #if DEBUG
             if(Input.GetKeyUp(KeyCode.Space))
             {
@@ -153,9 +165,9 @@ public class PhoneBehavior : MonoBehaviour
         }
 
     }
-#if DEBUG
+
     /// <summary>
-    /// Change la sélection du bouton [debug]
+    /// Sélectionne le bouton suivant
     /// </summary>
     public void SwitchButtonDebug()
     {
@@ -167,7 +179,7 @@ public class PhoneBehavior : MonoBehaviour
 
         idFormerButton = idCurrentButton;
     }
-#endif
+
     /// <summary>
     /// Change le bouton sélectionné en fonction de l'angle 
     /// </summary>
@@ -221,7 +233,7 @@ public class PhoneBehavior : MonoBehaviour
                     break;
             }
         }
-
+        
         if (tryCode.text.Length == 4) 
         {
             // Why is this block ???
@@ -246,7 +258,6 @@ public class PhoneBehavior : MonoBehaviour
                 isLocked = false;
                 screenText.color = Color.green;
                 screenText.text = "True";
-                TextDisplay message = new TextDisplay();
                 message.EndGame();
             }
             else
