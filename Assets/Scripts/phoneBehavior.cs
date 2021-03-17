@@ -39,11 +39,9 @@ public class PhoneBehavior : MonoBehaviour
     [Tooltip("Array of buttons instances")]
     private GameObject[] instancedButtons;
 
-    public void TestInput(SteamVR_Behaviour_Vector2 vec, SteamVR_Input_Sources device, Vector2 unk1, Vector2 unk2)
+    public void SelectNumber(Hand hand)
     {
-        Debug.Log("Input: " + vec);
-        Debug.Log("Device: " + device);
-        Debug.Log("unk1: " + unk1 + " unk2: " + unk2);
+        menuScroll.GetAxis(hand.handType);
     }
 
     // Start is called before the first frame update
@@ -71,98 +69,58 @@ public class PhoneBehavior : MonoBehaviour
 
         canvas = transform.GetChild(0).gameObject;
         canvas.SetActive(false);
-        //GetComponent<Throwable>().onPickUp.AddListener(EnableButtonsWheel);
-        //GetComponent<Throwable>().onDetachFromHand.AddListener(DisableButtonsWheel);
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        //GetComponent<Throwable>().attached
-        //isHeld = GetComponent<Throwable>().GetAttached();
-
         // Si on prend le smartphone, alors la roue de choix du code apparaît
         if (isHeld)
         {
-            if (initWheelOK)
-            {
-                initWheelOK = false;
-            }
-
-            //Activation du canvas 
-            canvas.SetActive(true);
-
             // On récupère la position du pouce sur le trackpad de la main droite
-            Debug.Log(SteamVR.connected[0] && !SteamVR.initializing && !SteamVR.calibrating && !SteamVR.outOfRange);
             if (SteamVR.connected[0] && !SteamVR.initializing && !SteamVR.calibrating && !SteamVR.outOfRange)
             {
                 menuPosition = menuScroll.GetAxis(SteamVR_Input_Sources.RightHand);
 
                 // Angle on trackpad
-                float temp = Mathf.Atan2(menuPosition[0], menuPosition[1]);                
-                Debug.Log(SteamVR_Actions.default_MenuScrolle.GetAxis(SteamVR_Input_Sources.RightHand));
-                Debug.Log(menuScroll.GetAxis(SteamVR_Input_Sources.LeftHand));
-                Debug.Log(menuScroll.GetAxis(SteamVR_Input_Sources.RightHand));
+                float temp = Mathf.Atan2(menuPosition[1], menuPosition[0]);
 
-                // Quick fix whe no HMD connected
-                if (!float.IsNaN(temp) && !float.IsInfinity(temp) && false)
+                // On s'assure qu'il y a bien un angle d'entré (pas toujours de doigt sur le touchpad)
+                if (!float.IsNaN(temp) && !float.IsInfinity(temp))
                 {
                     // On change le bouton en fonction de l'angle
-                    angle = temp;
+                    angle = temp + Mathf.PI;
                     SwitchButton(angle);
+                }
+
+                // On ajoute un nombre avec le bouton de la main gauche
+                if (selectNumber.GetStateUp(SteamVR_Input_Sources.LeftHand))
+                {
+                    AddNumber(idCurrentButton);
                 }
             } else
             {
                 angle += Input.GetAxis("Mouse ScrollWheel") * 2;
                 angle %= 2 * Mathf.PI;
                 SwitchButton(angle);
-            }
 
-            // Contrôle classique : espace, touche retour, et chiffres
-#if DEBUG
-            if(Input.GetKeyUp(KeyCode.Space))
-            {
-                AddNumber(idCurrentButton);
-            }
-
-            if (Input.GetKeyUp(KeyCode.Return))
-            {
-                AddNumber(idCurrentButton);
-            }
-            for (int i = 0; i < 9; i++)
-                if (Input.GetKeyUp(KeyCode.Alpha1 + i))
-                    AddNumber(i);
-            if (Input.GetKeyUp(KeyCode.Backspace))
-                AddNumber(9);
-#endif
-
-            //On ajoute un nombre avec le bouton de la main gauche
-            //device = Valve.VR.SteamVR_Controller.Input(Valve.VR.OpenVR.k_unTrackedDeviceIndex_Hmd);
-            // true si casque ready
-            //Debug.Log(SteamVR.connected[0] && !SteamVR.initializing && !SteamVR.calibrating && !SteamVR.outOfRange);
-            try
-            {
-                if (selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
+                // Contrôle classique : espace, touche retour, et chiffres
+                if (Input.GetKeyUp(KeyCode.Space))
                 {
                     AddNumber(idCurrentButton);
                 }
 
-                //Quand on relâche la gâchette on peut rajouter un chiffre
-                // selectNumber.GetStateUp(SteamVR_Input_Sources.LeftHand) permettrait d'effacer UnChiffreEnPlusPasPlus
-                if (!selectNumber.GetState(SteamVR_Input_Sources.LeftHand))
+                if (Input.GetKeyUp(KeyCode.Return))
                 {
-                    unChiffreEnPlusPasPlus = true;
+                    AddNumber(idCurrentButton);
                 }
+                for (int i = 0; i < 9; i++)
+                    if (Input.GetKeyUp(KeyCode.Alpha1 + i))
+                        AddNumber(i);
+                if (Input.GetKeyUp(KeyCode.Backspace))
+                    AddNumber(9);
             }
-            catch { 
-            }
-
-        }
-        else
-        {
-            initWheelOK = true;
-            canvas.SetActive(false);
         }
 
     }
@@ -184,7 +142,7 @@ public class PhoneBehavior : MonoBehaviour
     /// <summary>
     /// Change le bouton sélectionné en fonction de l'angle 
     /// </summary>
-    /// <param name="angle"></param>
+    /// <param name="angle">L'angle du bouton sur le menu radial.</param>
     public void SwitchButton(float angle)
     {
         // Il y a 12 boutons => répartition en 12 zones
@@ -214,69 +172,51 @@ public class PhoneBehavior : MonoBehaviour
         id = (id + 1) % numButtons;
         //Si on appuie sur la gâchette de la main gauche, alors on valide l'entrée d'un chiffre du code
         // Les id 10, 11 et 0 correspondent aux boutons Corriger, Valider et Annuler (respectivement)
-        if (tryCode.text.Length < 4 && unChiffreEnPlusPasPlus)
+        switch (id)
         {
-            unChiffreEnPlusPasPlus = false;
-            switch (id)
-            {
-                // Delete last character
-                case 10:
-                    tryCode.text = tryCode.text.Substring(0, tryCode.text.Length - 1);
-                    break;
-                case 11:
-                    tryCode.text = "";
-                    break;
-                case 0:
-                    isLocked = TryUnlock(tryCode.text);
-                    break;
-                default:
-                    tryCode.text += id;
-                    break;
-            }
-        }
-        
-        if (tryCode.text.Length == 4) 
-        {
-            // Why is this block ???
-            switch (id)
-            {
-                case 10:
-                    tryCode.text = tryCode.text.Substring(0, tryCode.text.Length - 1);
-                    unChiffreEnPlusPasPlus = false;
-                    break;
-                case 11:
-                    tryCode.text = "";
-                    unChiffreEnPlusPasPlus = false;
-                    break;
-                case 0:
-                    isLocked = TryUnlock(tryCode.text);
-                    unChiffreEnPlusPasPlus = false;
-                    break;
-            }
-
-            if (TryUnlock(tryCode.text))
-            {
-                isLocked = false;
-                screenText.color = Color.green;
-                screenText.text = "True";
-                message.EndGame();
-            }
-            else
-            {
+            // Delete last character
+            case 10:
+                tryCode.text = tryCode.text.Substring(0, tryCode.text.Length - 1);
+                break;
+            case 11:
                 tryCode.text = "";
-                screenText.color = Color.red;
-                screenText.text = "Wrong \ncode";
-            }
-            
+                break;
+            case 0:
+                isLocked = TryUnlock(tryCode.text);
+                break;
+            default:
+                if (tryCode.text.Length < 4)
+                {
+                    tryCode.text += id;
+                    if (tryCode.text.Length == 4)
+                        TryUnlock(tryCode.text);
+                }
+                else
+                    TryUnlock(tryCode.text);
+                break;
         }
     }
 
     /// <summary>
-    /// Test si le code d'essai est juste 
+    /// Test si le code d'essai est juste, et agit en conséquence
     /// </summary>
     /// <param name="trycode">Code à tester.</param>
     public bool TryUnlock(string trycode)
     {
+        if (tryCode.text == code)
+        {
+            isLocked = false;
+            screenText.color = Color.green;
+            screenText.text = "Code\nbon";
+            message.EndGame();
+        }
+        else
+        {
+            isLocked = true;
+            tryCode.text = "";
+            screenText.color = Color.red;
+            screenText.text = "Code \nfaux !";
+        }
         return trycode == code;
     }
 
