@@ -41,7 +41,7 @@
       "requirement": "optional"
     },
     {
-      "name": "/actions/default/in/MenuScrolle",
+      "name": "/actions/default/in/MenuScroll",
       "type": "vector2"
     },
     {

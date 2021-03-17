@@ -9,8 +9,8 @@ public class BookBehavior : MonoBehaviour
     void Start()
     {
         anim = GetComponentInChildren<Animation>();
-        //GetComponent<Throwable>().onPickUp.AddListener(OpenBook);
-        //GetComponent<Throwable>().onDetachFromHand.AddListener(CloseBook);
+        GetComponent<Throwable>().onPickUp.AddListener(OpenBook);
+        GetComponent<Throwable>().onDetachFromHand.AddListener(CloseBook);
     }
 
     // Update is called once per frame
@@ -21,12 +21,12 @@ public class BookBehavior : MonoBehaviour
     /// <summary>
     /// Play book opening animation
     /// </summary>
-    public void OpenBook()
+    void OpenBook()
     {
         anim.CrossFade("bookOpen");
     }
 
-    public void CloseBook()
+    void CloseBook()
     {
         anim.CrossFade("bookClose");
     }
