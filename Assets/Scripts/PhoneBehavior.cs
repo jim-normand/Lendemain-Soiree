@@ -69,8 +69,6 @@ public class PhoneBehavior : MonoBehaviour
 
         canvas = transform.GetChild(0).gameObject;
         canvas.SetActive(false);
-        //GetComponent<Throwable>().onPickUp.AddListener(EnableButtonsWheel);
-        //GetComponent<Throwable>().onDetachFromHand.AddListener(DisableButtonsWheel);
     }
 
 
@@ -80,14 +78,6 @@ public class PhoneBehavior : MonoBehaviour
         // Si on prend le smartphone, alors la roue de choix du code apparaît
         if (isHeld)
         {
-            if (initWheelOK)
-            {
-                initWheelOK = false;
-            }
-
-            //Activation du canvas 
-            canvas.SetActive(true);
-
             // On récupère la position du pouce sur le trackpad de la main droite
             if (SteamVR.connected[0] && !SteamVR.initializing && !SteamVR.calibrating && !SteamVR.outOfRange)
             {
@@ -131,11 +121,6 @@ public class PhoneBehavior : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.Backspace))
                     AddNumber(9);
             }
-        }
-        else
-        {
-            initWheelOK = true;
-            canvas.SetActive(false);
         }
 
     }
