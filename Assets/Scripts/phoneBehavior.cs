@@ -94,7 +94,8 @@ public class PhoneBehavior : MonoBehaviour
             canvas.SetActive(true);
 
             // On récupère la position du pouce sur le trackpad de la main droite
-            try
+            Debug.Log(SteamVR.connected[0] && !SteamVR.initializing && !SteamVR.calibrating && !SteamVR.outOfRange);
+            if (SteamVR.connected[0] && !SteamVR.initializing && !SteamVR.calibrating && !SteamVR.outOfRange)
             {
                 menuPosition = menuScroll.GetAxis(SteamVR_Input_Sources.RightHand);
 
@@ -111,7 +112,7 @@ public class PhoneBehavior : MonoBehaviour
                     angle = temp;
                     SwitchButton(angle);
                 }
-            } catch
+            } else
             {
                 angle += Input.GetAxis("Mouse ScrollWheel") * 2;
                 angle %= 2 * Mathf.PI;
