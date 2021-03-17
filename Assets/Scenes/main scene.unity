@@ -3169,55 +3169,13 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &964856648 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 626112687494750865, guid: 4cad9378a4767ef409b3efa1aa359026,
-    type: 3}
-  m_PrefabInstance: {fileID: 1015738514}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &964856649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 964856648}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 882e9db3ae3cfdf4793461eada0f54b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vector2Action:
-    actionPath: 
-    needsReinit: 0
-  inputSource: 0
-  onChange:
-    m_PersistentCalls:
-      m_Calls: []
-  onUpdate:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 964856655}
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onAxis:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &964856655 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4472358039366738203, guid: 4cad9378a4767ef409b3efa1aa359026,
     type: 3}
   m_PrefabInstance: {fileID: 1015738514}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 964856648}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bcb9af708c672549804164ac9d534cb, type: 3}
@@ -3600,6 +3558,11 @@ PrefabInstance:
       objectReference: {fileID: 377654321}
     - target: {fileID: 4472358039366738203, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
+      propertyPath: message
+      value: 
+      objectReference: {fileID: 1333936981}
+    - target: {fileID: 4472358039366738203, guid: 4cad9378a4767ef409b3efa1aa359026,
+        type: 3}
       propertyPath: tryCode
       value: 
       objectReference: {fileID: 977621880}
@@ -3885,7 +3848,7 @@ PrefabInstance:
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onHeldUpdate.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TestHand
+      value: SelectNumber
       objectReference: {fileID: 0}
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
