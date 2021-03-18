@@ -29,8 +29,6 @@ public class PhoneBehavior : MonoBehaviour
     private int idFormerButton;
     private float espacementBoutons;
     private float rayonBoutons;
-    // Pour ajouter un chiffre au code un par un
-    private bool unChiffreEnPlusPasPlus = true; 
     public bool initWheelOK;
     // Le code à trouver pour déverouiller
     private string code; 
