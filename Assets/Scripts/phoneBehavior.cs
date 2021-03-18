@@ -29,8 +29,6 @@ public class PhoneBehavior : MonoBehaviour
     private int idFormerButton;
     private float espacementBoutons;
     private float rayonBoutons;
-    // Pour ajouter un chiffre au code un par un
-    private bool unChiffreEnPlusPasPlus = true; 
     public bool initWheelOK;
     // Le code à trouver pour déverouiller
     private string code; 
@@ -78,9 +76,10 @@ public class PhoneBehavior : MonoBehaviour
         // Si on prend le smartphone, alors la roue de choix du code apparaît
         if (isHeld)
         {
-            // On récupère la position du pouce sur le trackpad de la main droite
+            // On vérifie que l'on porte un casque (pas en mode bureau)
             if (SteamVR.connected[0] && !SteamVR.initializing && !SteamVR.calibrating && !SteamVR.outOfRange)
             {
+                // On récupère la position du pouce sur le trackpad de la main droite
                 menuPosition = menuScroll.GetAxis(SteamVR_Input_Sources.RightHand);
 
                 // Angle on trackpad
@@ -99,7 +98,9 @@ public class PhoneBehavior : MonoBehaviour
                 {
                     AddNumber(idCurrentButton);
                 }
-            } else
+            } 
+            // Mode bureau : utilisation des WIMPs
+            else
             {
                 angle += Input.GetAxis("Mouse ScrollWheel") * 2;
                 angle %= 2 * Mathf.PI;
@@ -126,24 +127,10 @@ public class PhoneBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// Sélectionne le bouton suivant
-    /// </summary>
-    public void SwitchButtonDebug()
-    {
-        idCurrentButton = (idFormerButton + 1) % numButtons;
-        
-        // Enfin, selon l'id du bouton, on fait l'échange de sélection entre les boutons
-        instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>().Select();
-        instancedButtons[idFormerButton].GetComponent<ButtonBehavior>().Deselect();
-
-        idFormerButton = idCurrentButton;
-    }
-
-    /// <summary>
     /// Change le bouton sélectionné en fonction de l'angle 
     /// </summary>
     /// <param name="angle">L'angle du bouton sur le menu radial.</param>
-    public void SwitchButton(float angle)
+    void SwitchButton(float angle)
     {
         // Il y a 12 boutons => répartition en 12 zones
         // De manière empirique : on a regardé l'angle calculé sur l'inspecteur en runtime pour savoir quel id correspond à quel angle
@@ -166,7 +153,7 @@ public class PhoneBehavior : MonoBehaviour
     /// <summary>
     /// Permet d'ajouter le chiffre validé (via son id) au code d'essai
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">Button id</param>
     public void AddNumber(int id) 
     {
         id = (id + 1) % numButtons;
@@ -215,7 +202,7 @@ public class PhoneBehavior : MonoBehaviour
             isLocked = true;
             tryCode.text = "";
             screenText.color = Color.red;
-            screenText.text = "Code \nfaux !";
+            screenText.text = "Code\nfaux !";
         }
         return trycode == code;
     }
