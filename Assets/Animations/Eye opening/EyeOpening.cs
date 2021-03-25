@@ -6,20 +6,24 @@ using System.Collections.Generic;
 [RequireComponent(typeof(MeshFilter))]
 public class EyeOpening : MonoBehaviour
 {
-	public int mapWidth = 100;
-	public int mapHeight = 100;
+	public int mapWidth = 19200;
+	public int mapHeight = 1080;
 	public float planeDistance = 0.05f;
-	float t = 0f;
+
+	[Range(0, 1)]
+	public float animationRate = 0;
+
+	float t;
+	const float dt = 0.05f;
+
+	bool animationRunning = true;
 
 	public Material closedEyeMaterial;
 
 	private Camera mainCamera;
 
 	private MeshRenderer textureRender;
-	Color[] colorMap;
 	Texture2D texture;
-
-	List<Vector3> vertices = new List<Vector3>();
 
 	// Black and opaque
 	Color eyeClosed = new Color(0, 0, 0, 1);
@@ -29,37 +33,82 @@ public class EyeOpening : MonoBehaviour
 	private void Start()
 	{
 		mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-		colorMap = new Color[mapWidth * mapHeight];
 
 		CreateMesh();
 
 		textureRender = this.GetComponent<MeshRenderer>();
 		texture = new Texture2D(mapWidth, mapHeight);
+
+		t = 1.1f;
+		ClearTexture();
 	}
 
     private void Update()
 	{
+		// Update distance if changed i nthe editor
 		this.transform.localPosition = -Mathf.Max(mainCamera.nearClipPlane +0.01f, planeDistance) * mainCamera.transform.forward;
+
+		// Update texture
+		if (animationRunning)
+		{
+			UpdateTexture();
+
+			t += dt * animationRate;
+
+			if (t > 1f)
+            {
+				animationRunning = false;
+
+			}
+		}
+	}
+
+	public void ResetAnimation()
+    {
+		t = 0.001f;
+		animationRunning = true;
+    }
+
+	private void UpdateTexture()
+    {
 		if (t > 1f)
-        {
+		{
 			return;
-        }
-		for (int i = 0; i < mapWidth; i++)
-        {
-			for (int j = 0; j < mapHeight; j++)
+		}
+
+		float midH = mapHeight / 2f;
+		for (int i = 0; i < mapHeight; i++)
+		{
+			for (int j = 0; j < mapWidth; j++)
 			{
-				texture.SetPixel(i, j, Color.Lerp(eyeClosed, eyeOpen, t));
+				if (Mathf.Abs(i - midH) > t * midH)
+				{
+					texture.SetPixel(i, j, eyeClosed);
+				} else
+				{
+					texture.SetPixel(i, j, Color.Lerp(eyeOpen, eyeClosed, (i - midH)/midH));
+				}
 			}
 		}
 		texture.Apply();
-
 		textureRender.sharedMaterial.mainTexture = texture;
-		t += 0.005f;
+	}
+
+	private void ClearTexture()
+    {
+		for (int i = 0; i < mapHeight; i++)
+		{
+			for (int j = 0; j < mapWidth; j++)
+			{
+				texture.SetPixel(i, j, eyeOpen);
+			}
+		}
+		texture.Apply();
+		textureRender.sharedMaterial.mainTexture = texture;
 	}
 
 	private void CreateMesh()
     {
-		// The mesh could be actuated if the fov/aspect change during the execution...
 		float fov = mainCamera.fieldOfView;
 		float aspect = mainCamera.aspect;
 		float dist = Mathf.Max(mainCamera.nearClipPlane + 0.01f, planeDistance);
