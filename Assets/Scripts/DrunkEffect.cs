@@ -4,9 +4,15 @@ using Valve.VR.InteractionSystem;
 // Create a "drunk effect" on hands, they are sometimes less precise
 public class DrunkEffect : MonoBehaviour
 {
-    [Tooltip("Ratio of time you no not have controls.")]
+    [Tooltip("Ratio of time you do not have controls.")]
     [Range(0, 100)]
     public float drunkRatio;
+    [Tooltip("Drunk ratio at the start of the game.")]
+    private float startDrunkRatio;
+
+    [Tooltip("Time (in seconds) to get sober.")]
+    public float soberTime;
+
     [Tooltip("The amount of time you loose control over hand (in seconds).")]
     public float drunkDuration;
     [Tooltip("Minimum time between two drunks periods")]
@@ -21,20 +27,31 @@ public class DrunkEffect : MonoBehaviour
     [Tooltip("Is this hand drunk?")]
     private bool drunkHand;
 
+    [SerializeField]
+    [Tooltip("Eye opening script.")]
+    private EyeOpening eyeOpening;
+
 
     void Start()
     {
+        startDrunkRatio = drunkRatio;
+        // Time offset
+        soberTime += Time.time;
         hands = GetComponent<Player>().hands;
         drunkHandTimes = new float[3] { 
             Time.time - drunkEvaluationPeriod, 
             Time.time - drunkEvaluationPeriod, 
             Time.time - drunkEvaluationPeriod
         };
-        //InvokeRepeating("DisableHands", 0, 1);
+        eyeOpening.animationRate = soberTime / 1000;
+        if (drunkRatio > 0)
+            eyeOpening.ResetAnimation();
     }
 
     private void Update()
     {
+        drunkRatio = Mathf.Clamp(startDrunkRatio * (soberTime - Time.time) / soberTime, 0, 100);
+        //eyeOpening.animationRate = 1 - drunkRatio / 100;
         // For each hand (left, right and fallback)
         for (int i = 0; i < 3; i++)
         {

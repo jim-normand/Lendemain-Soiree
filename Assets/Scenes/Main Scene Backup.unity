@@ -4559,7 +4559,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c687f32de7ad59d41bd09f9886da0c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drunkRatio: 0
+  drunkRatio: 30
+  soberTime: 20
   drunkDuration: 0.2
   drunkEvaluationPeriod: 3
 --- !u!1001 &1280643092
