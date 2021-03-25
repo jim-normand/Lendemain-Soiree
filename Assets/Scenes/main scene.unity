@@ -4818,6 +4818,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51db3efb341327d4391270417017c0ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onGameStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1877745074}
+        m_MethodName: ResetAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1333936982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7434,6 +7448,18 @@ Transform:
   m_Father: {fileID: 1824199314}
   m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1877745074 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8473951990962035321, guid: 558d64d9c40b1044d8b9c62d9020130b,
+    type: 3}
+  m_PrefabInstance: {fileID: 736638563}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 341be6adefefc0f4dba73ec4295be1ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1900747386
 PrefabInstance:
   m_ObjectHideFlags: 0
