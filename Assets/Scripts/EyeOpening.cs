@@ -6,12 +6,12 @@ public class EyeOpening : MonoBehaviour
 {
 	public int mapWidth = 1920;
 	public int mapHeight = 1080;
-	public float planeDistance = 0.05f;
+	public float planeDistance = 0.01f;
 
 	[Range(0, 1)]
 	public float animationRate = 0;
 
-	float t;
+	float animationTime;
 
 	bool animationRunning = true;
 
@@ -37,8 +37,9 @@ public class EyeOpening : MonoBehaviour
 		textureRender = GetComponent<MeshRenderer>();
 		texture = new Texture2D(mapWidth, mapHeight);
 		transform.localPosition = Mathf.Max(mainCamera.nearClipPlane + 0.01f, planeDistance) * Vector3.forward;
+		transform.localRotation = Quaternion.identity;
 
-		t = 1.1f;
+		animationTime = 1.1f;
 		ClearTexture();
 	}
 
@@ -49,25 +50,24 @@ public class EyeOpening : MonoBehaviour
 		{
 			UpdateTexture();
 
-			t += Time.deltaTime * animationRate;
+			animationTime += Time.deltaTime * animationRate;
 
-			if (t > 1f)
+			if (animationTime > 1f)
             {
 				animationRunning = false;
-
 			}
 		}
 	}
 
 	public void ResetAnimation()
     {
-		t = 0.001f;
+		animationTime = 0.001f;
 		animationRunning = true;
     }
 
 	private void UpdateTexture()
     {
-		if (t > 1f)
+		if (animationTime > 1f)
 		{
 			return;
 		}
@@ -77,7 +77,7 @@ public class EyeOpening : MonoBehaviour
 		{
 			for (int j = 0; j < mapWidth; j++)
 			{
-				if (Mathf.Abs(i - midH) > t * midH)
+				if (Mathf.Abs(i - midH) > animationTime * midH)
 				{
 					texture.SetPixel(i, j, eyeClosed);
 				} else
@@ -105,33 +105,36 @@ public class EyeOpening : MonoBehaviour
 
 	private void CreateMesh()
     {
-		// Could be replaced by setting camera's field of view height ?
+		// Could all this function be replaced by setting camera's field of view height ?
 		float fov = mainCamera.fieldOfView * Mathf.Deg2Rad;
 		float aspect = mainCamera.aspect;
 		float dist = Mathf.Max(mainCamera.nearClipPlane + 0.01f, planeDistance);
-		float width = Mathf.Abs(2f * dist * Mathf.Tan(fov / 2f));
-		float height = width / aspect;
+		// Note this additional factor 2 that avoid see white lines in the edge of the vision
+		float width = Mathf.Abs(2f * dist * Mathf.Tan(fov / 2f)) * 2;
+		float height = width / aspect * 2;
 
 		Vector3[] vertices;
 		Vector2[] uvs = new Vector2[4];
-		int[] triangles = new int[6];
+		int[] triangles;
 
-		// Very strange since vertices are in local space
-		Vector3 right = width / 2 * mainCamera.transform.right;
-		Vector3 up = height / 2 * mainCamera.transform.up;
-		vertices = new Vector3[] { -right + up, right + up, right - up, - right - up};
+		Vector3 right = width / 2 * Vector3.right;
+		Vector3 up = height / 2 * Vector3.up;
+		vertices = new Vector3[] { 
+			- right + up, 
+			  right + up, 
+			  right - up, 
+			- right - up
+		};
 
 		uvs[0] = new Vector2(0, 1);
 		uvs[1] = new Vector2(0, 0);
 		uvs[2] = new Vector2(1, 0);
 		uvs[3] = new Vector2(1, 1);
 
-		triangles[0] = 0;
-		triangles[1] = 1;
-		triangles[2] = 2;
-		triangles[3] = 2;
-		triangles[4] = 3;
-		triangles[5] = 0;
+		triangles = new int[] {
+			0, 1, 2,
+			2, 3, 0
+		};
 
 		Mesh mesh = new Mesh();
 		mesh.vertices = vertices;

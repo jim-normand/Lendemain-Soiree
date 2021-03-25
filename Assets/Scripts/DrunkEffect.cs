@@ -43,7 +43,7 @@ public class DrunkEffect : MonoBehaviour
             Time.time - drunkEvaluationPeriod, 
             Time.time - drunkEvaluationPeriod
         };
-        eyeOpening.animationRate = soberTime / 1000;
+        eyeOpening.animationRate = soberTime / 500;
         if (drunkRatio > 0)
             eyeOpening.ResetAnimation();
     }
