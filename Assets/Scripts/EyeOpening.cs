@@ -36,11 +36,8 @@ public class EyeOpening : MonoBehaviour
 
 		textureRender = GetComponent<MeshRenderer>();
 		texture = new Texture2D(mapWidth, mapHeight);
-<<<<<<< HEAD:Assets/Animations/Eye opening/EyeOpening.cs
 		textureRender.sharedMaterial.mainTexture = texture;
-=======
 		transform.localPosition = Mathf.Max(mainCamera.nearClipPlane + 0.01f, planeDistance) * Vector3.forward;
->>>>>>> 8f40639e6ee4d3fa9eb46e9060987807edfb1b79:Assets/Scripts/EyeOpening.cs
 
 		t = 1.1f;
 		animationRunning = false;
