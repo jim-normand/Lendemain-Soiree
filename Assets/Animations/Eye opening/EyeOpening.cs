@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
@@ -20,6 +18,7 @@ public class EyeOpening : MonoBehaviour
 
 	public Material closedEyeMaterial;
 
+	[SerializeField]
 	private Camera mainCamera;
 
 	private MeshRenderer textureRender;
@@ -34,10 +33,13 @@ public class EyeOpening : MonoBehaviour
 	{
 		mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
 
+		transform.SetParent(mainCamera.transform);
 		CreateMesh();
 
-		textureRender = this.GetComponent<MeshRenderer>();
+		textureRender = GetComponent<MeshRenderer>();
 		texture = new Texture2D(mapWidth, mapHeight);
+		//transform.parent = mainCamera.transform;
+		transform.localPosition = Mathf.Max(mainCamera.nearClipPlane + 0.1f, planeDistance) * Vector3.forward;
 
 		t = 1.1f;
 		ClearTexture();
@@ -45,15 +47,12 @@ public class EyeOpening : MonoBehaviour
 
     private void Update()
 	{
-		// Update distance if changed i nthe editor
-		this.transform.localPosition = -Mathf.Max(mainCamera.nearClipPlane +0.01f, planeDistance) * mainCamera.transform.forward;
-
 		// Update texture
 		if (animationRunning)
 		{
 			UpdateTexture();
 
-			t += dt * animationRate;
+			t += Time.deltaTime * animationRate;
 
 			if (t > 1f)
             {
@@ -109,6 +108,7 @@ public class EyeOpening : MonoBehaviour
 
 	private void CreateMesh()
     {
+		// Could be replaced by setting camera's field of view height
 		float fov = mainCamera.fieldOfView;
 		float aspect = mainCamera.aspect;
 		float dist = Mathf.Max(mainCamera.nearClipPlane + 0.01f, planeDistance);
@@ -119,7 +119,6 @@ public class EyeOpening : MonoBehaviour
 		Vector2[] uvs = new Vector2[4];
 		int[] triangles = new int[6];
 
-		this.transform.SetParent(mainCamera.transform);
 		vertices[0] = - width / 2f * mainCamera.transform.right + height / 2f * mainCamera.transform.up;
 		vertices[1] = + width / 2f * mainCamera.transform.right + height / 2f * mainCamera.transform.up;
 		vertices[2] = + width / 2f * mainCamera.transform.right - height / 2f * mainCamera.transform.up;
@@ -143,9 +142,9 @@ public class EyeOpening : MonoBehaviour
 		mesh.triangles = triangles;
 		mesh.RecalculateNormals();
 
-		this.GetComponent<MeshFilter>().sharedMesh = mesh;
-		this.GetComponent<MeshRenderer>().sharedMaterial = closedEyeMaterial;
-		this.GetComponent<MeshFilter>().transform.localScale = Vector3.one;
-		this.GetComponent<MeshRenderer>().transform.localScale = Vector3.one;
+		GetComponent<MeshFilter>().sharedMesh = mesh;
+		GetComponent<MeshRenderer>().sharedMaterial = closedEyeMaterial;
+		GetComponent<MeshFilter>().transform.localScale = Vector3.one;
+		GetComponent<MeshRenderer>().transform.localScale = Vector3.one;
 	}
 }
