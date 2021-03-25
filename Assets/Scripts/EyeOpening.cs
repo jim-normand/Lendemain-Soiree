@@ -12,13 +12,11 @@ public class EyeOpening : MonoBehaviour
 	public float animationRate = 0;
 
 	float t;
-	const float dt = 0.05f;
 
 	bool animationRunning = true;
 
 	public Material closedEyeMaterial;
 
-	[SerializeField]
 	private Camera mainCamera;
 
 	private MeshRenderer textureRender;
@@ -38,8 +36,7 @@ public class EyeOpening : MonoBehaviour
 
 		textureRender = GetComponent<MeshRenderer>();
 		texture = new Texture2D(mapWidth, mapHeight);
-		//transform.parent = mainCamera.transform;
-		transform.localPosition = Mathf.Max(mainCamera.nearClipPlane + 0.1f, planeDistance) * Vector3.forward;
+		transform.localPosition = Mathf.Max(mainCamera.nearClipPlane + 0.01f, planeDistance) * Vector3.forward;
 
 		t = 1.1f;
 		ClearTexture();
@@ -115,14 +112,14 @@ public class EyeOpening : MonoBehaviour
 		float width = Mathf.Abs(2f * dist * Mathf.Tan(fov / 2f));
 		float height = width / aspect;
 
-		Vector3[] vertices = new Vector3[4];
+		Vector3[] vertices;
 		Vector2[] uvs = new Vector2[4];
 		int[] triangles = new int[6];
 
-		vertices[0] = - width / 2f * mainCamera.transform.right + height / 2f * mainCamera.transform.up;
-		vertices[1] = + width / 2f * mainCamera.transform.right + height / 2f * mainCamera.transform.up;
-		vertices[2] = + width / 2f * mainCamera.transform.right - height / 2f * mainCamera.transform.up;
-		vertices[3] = - width / 2f * mainCamera.transform.right - height / 2f * mainCamera.transform.up;
+		// Very strange since vertices are in local space
+		Vector3 right = width / 2 * mainCamera.transform.right;
+		Vector3 up = height / 2 * mainCamera.transform.up;
+		vertices = new Vector3[] { -right + up, right + up, right - up, - right - up};
 
 		uvs[0] = new Vector2(0, 1);
 		uvs[1] = new Vector2(0, 0);
