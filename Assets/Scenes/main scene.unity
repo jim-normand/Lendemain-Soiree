@@ -2869,7 +2869,7 @@ PrefabInstance:
     - target: {fileID: 8473951990962035321, guid: 558d64d9c40b1044d8b9c62d9020130b,
         type: 3}
       propertyPath: animationRate
-      value: 0.099
+      value: 0.068
       objectReference: {fileID: 0}
     - target: {fileID: 8473951990962035321, guid: 558d64d9c40b1044d8b9c62d9020130b,
         type: 3}

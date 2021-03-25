@@ -16,7 +16,7 @@ public class EyeOpening : MonoBehaviour
 	float t;
 	const float dt = 0.05f;
 
-	bool animationRunning = true;
+	bool animationRunning;
 
 	public Material closedEyeMaterial;
 
@@ -38,9 +38,11 @@ public class EyeOpening : MonoBehaviour
 
 		textureRender = this.GetComponent<MeshRenderer>();
 		texture = new Texture2D(mapWidth, mapHeight);
+		textureRender.sharedMaterial.mainTexture = texture;
 
 		t = 1.1f;
-		ClearTexture();
+		animationRunning = false;
+		SetUniformColor(eyeClosed);
 	}
 
     private void Update()
@@ -58,7 +60,7 @@ public class EyeOpening : MonoBehaviour
 			if (t > 1f)
             {
 				animationRunning = false;
-
+				SetUniformColor(eyeOpen);
 			}
 		}
 	}
@@ -91,20 +93,18 @@ public class EyeOpening : MonoBehaviour
 			}
 		}
 		texture.Apply();
-		textureRender.sharedMaterial.mainTexture = texture;
 	}
 
-	private void ClearTexture()
+	private void SetUniformColor(Color color)
     {
 		for (int i = 0; i < mapHeight; i++)
 		{
 			for (int j = 0; j < mapWidth; j++)
 			{
-				texture.SetPixel(i, j, eyeOpen);
+				texture.SetPixel(i, j, color);
 			}
 		}
 		texture.Apply();
-		textureRender.sharedMaterial.mainTexture = texture;
 	}
 
 	private void CreateMesh()
