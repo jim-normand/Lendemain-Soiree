@@ -8,6 +8,7 @@ public class TextDisplay : MonoBehaviour
 
     bool firstText = false;
     int frameCounter = 0;
+    public EventTrigger.TriggerEvent onGameStart = null;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +35,8 @@ public class TextDisplay : MonoBehaviour
                     textObjects[0].text = "";
                     textObjects[0].color = new Color(textObjects[0].color.r, textObjects[0].color.g, textObjects[0].color.b, 1.0f);
                     firstText = false;
+                    if (onGameStart != null)
+                        onGameStart.Invoke(null);
                 }
             }
         }

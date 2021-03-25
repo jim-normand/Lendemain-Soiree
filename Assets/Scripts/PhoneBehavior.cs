@@ -57,7 +57,6 @@ public class PhoneBehavior : MonoBehaviour
         code = "6476";
         tryCode.text = "";
         initWheelOK = true;
-        screenText.text = "Code :";
 
         //Par défault, c'est le bouton 'en haut' de la roue qui est sélectionné (bouton correction => g10)
         instancedButtons = new GameObject[numButtons];
@@ -69,55 +68,7 @@ public class PhoneBehavior : MonoBehaviour
         instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>().Select();
         angle = 0;
 
-        screens = new GameObject[2];
-
-        screens[0] = transform.GetChild(0).gameObject;
-        screens[0].SetActive(false);
-
-        screens[1] = new GameObject("Screen locked");
-        screens[1].transform.SetParent(this.transform);
-        screens[1].transform.localPosition = 0.0074f*Vector3.up;
-        screens[1].transform.localRotation = Quaternion.identity;
-        screens[1].AddComponent(typeof(MeshRenderer));
-        screens[1].AddComponent(typeof(MeshFilter));
-        List<Material> mats = new List<Material>();
-        this.GetComponent<MeshRenderer>().GetSharedMaterials(mats);
-        screens[1].GetComponent<MeshRenderer>().sharedMaterial = mats[1];
-        float screenWidth = 0.115f;
-        float screenHeight = 0.215f;
-        Mesh mesh = new Mesh();
-        Vector3[] vertices = new Vector3[4];
-        vertices[0] = new Vector3(-screenWidth / 2f, 0, +screenHeight / 2f);
-        vertices[1] = new Vector3(+screenWidth / 2f, 0, +screenHeight / 2f);
-        vertices[2] = new Vector3(+screenWidth / 2f, 0, -screenHeight / 2f);
-        vertices[3] = new Vector3(-screenWidth / 2f, 0, -screenHeight / 2f);
-        Vector2[] uvs = new Vector2[4];
-        uvs[0] = new Vector2(1, 0);
-        uvs[1] = new Vector2(0, 0);
-        uvs[2] = new Vector2(1, 0.85f);
-        uvs[3] = new Vector2(0, 0.85f);
-        int[] triangles = new int[6];
-        triangles[0] = 0;
-        triangles[1] = 1;
-        triangles[2] = 2;
-        triangles[3] = 2;
-        triangles[4] = 3;
-        triangles[5] = 0;
-
-        mesh.vertices = vertices;
-        mesh.uv = uvs;
-        mesh.triangles = triangles;
-        mesh.RecalculateNormals();
-        screens[1].GetComponent<MeshFilter>().sharedMesh = mesh;
-
-        GameObject canvas = GameObject.Find("Phone timer");
-        canvas.transform.SetParent(screens[1].transform);
-        canvas.transform.localPosition = 0.001f * Vector3.up;
-        canvas.transform.localRotation = Quaternion.Euler(90f, 0, 180f);
-        canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(screenWidth, screenHeight);
-        canvas.transform.GetChild(0).localScale = new Vector3(screenWidth / 100f, 0.75f*screenHeight / 100f, 1);
-        canvas.transform.GetChild(1).localScale = new Vector3(screenWidth / 100f, screenHeight / 100f, 1);
-
+        InitialiseScreens();
     }
 
 
@@ -127,6 +78,7 @@ public class PhoneBehavior : MonoBehaviour
         // Si on prend le smartphone, alors la roue de choix du code apparaît
         if (isHeld)
         {
+            ShowCodeScreen();
             // On récupère la position du pouce sur le trackpad de la main droite
             if (SteamVR.connected[0] && !SteamVR.initializing && !SteamVR.calibrating && !SteamVR.outOfRange)
             {
@@ -170,8 +122,82 @@ public class PhoneBehavior : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.Backspace))
                     AddNumber(9);
             }
+        } else
+        {
+            ShowLockedScreen();
         }
 
+    }
+
+    private void InitialiseScreens()
+    {
+        screens = new GameObject[2];
+
+        screens[0] = transform.GetChild(0).gameObject;
+
+        screens[1] = new GameObject("Screen locked");
+        screens[1].transform.SetParent(this.transform);
+        screens[1].transform.localPosition = 0.0074f * Vector3.up;
+        screens[1].transform.localRotation = Quaternion.identity;
+        screens[1].AddComponent(typeof(MeshRenderer));
+        screens[1].AddComponent(typeof(MeshFilter));
+        List<Material> mats = new List<Material>();
+        this.GetComponent<MeshRenderer>().GetSharedMaterials(mats);
+        screens[1].GetComponent<MeshRenderer>().sharedMaterial = mats[1];
+        float screenWidth = 0.115f;
+        float screenHeight = 0.215f;
+        Mesh mesh = new Mesh();
+        Vector3[] vertices = new Vector3[4];
+        vertices[0] = new Vector3(-screenWidth / 2f, 0, +screenHeight / 2f);
+        vertices[1] = new Vector3(+screenWidth / 2f, 0, +screenHeight / 2f);
+        vertices[2] = new Vector3(+screenWidth / 2f, 0, -screenHeight / 2f);
+        vertices[3] = new Vector3(-screenWidth / 2f, 0, -screenHeight / 2f);
+        Vector2[] uvs = new Vector2[4];
+        uvs[0] = new Vector2(1, 0);
+        uvs[1] = new Vector2(0, 0);
+        uvs[2] = new Vector2(1, 0.85f);
+        uvs[3] = new Vector2(0, 0.85f);
+        int[] triangles = new int[6];
+        triangles[0] = 0;
+        triangles[1] = 1;
+        triangles[2] = 2;
+        triangles[3] = 2;
+        triangles[4] = 3;
+        triangles[5] = 0;
+
+        mesh.vertices = vertices;
+        mesh.uv = uvs;
+        mesh.triangles = triangles;
+        mesh.RecalculateNormals();
+        screens[1].GetComponent<MeshFilter>().sharedMesh = mesh;
+
+        GameObject canvas = GameObject.Find("Phone timer");
+        canvas.transform.SetParent(screens[1].transform);
+        canvas.transform.localPosition = 0.001f * Vector3.up;
+        canvas.transform.localRotation = Quaternion.Euler(90f, 0, 180f);
+        canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(screenWidth, screenHeight);
+        canvas.transform.GetChild(0).localScale = new Vector3(screenWidth / 100f, 0.75f * screenHeight / 100f, 1);
+        canvas.transform.GetChild(1).localScale = new Vector3(screenWidth / 100f, screenHeight / 100f, 1);
+    }
+
+    private void ShowLockedScreen()
+    {
+        if (screens[0].activeSelf)
+        {
+            screens[0].SetActive(false);
+            screens[1].SetActive(true);
+        }
+    }
+
+    private void ShowCodeScreen()
+    {
+        if (screens[1].activeSelf)
+        {
+            screens[1].SetActive(false);
+            screens[0].SetActive(true);
+            screenText.text = "Code :";
+            screenText.color = Color.white;
+        }
     }
 
     /// <summary>
