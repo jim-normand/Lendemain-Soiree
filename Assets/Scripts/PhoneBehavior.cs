@@ -23,7 +23,6 @@ public class PhoneBehavior : MonoBehaviour
     [Tooltip("Code entered by user.")]
     public Text tryCode;
     public Text screenText;
-    public GameObject canvas;
 
     private int idCurrentButton;
     private int idFormerButton;
@@ -64,9 +63,6 @@ public class PhoneBehavior : MonoBehaviour
         idFormerButton = idCurrentButton;
         instancedButtons[idCurrentButton].GetComponent<ButtonBehavior>().Select();
         angle = 0;
-
-        canvas = transform.GetChild(0).gameObject;
-        canvas.SetActive(false);
     }
 
 

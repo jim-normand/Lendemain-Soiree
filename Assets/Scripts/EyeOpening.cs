@@ -4,7 +4,7 @@
 [RequireComponent(typeof(MeshFilter))]
 public class EyeOpening : MonoBehaviour
 {
-	public int mapWidth = 19200;
+	public int mapWidth = 1920;
 	public int mapHeight = 1080;
 	public float planeDistance = 0.05f;
 
@@ -105,8 +105,8 @@ public class EyeOpening : MonoBehaviour
 
 	private void CreateMesh()
     {
-		// Could be replaced by setting camera's field of view height
-		float fov = mainCamera.fieldOfView;
+		// Could be replaced by setting camera's field of view height ?
+		float fov = mainCamera.fieldOfView * Mathf.Deg2Rad;
 		float aspect = mainCamera.aspect;
 		float dist = Mathf.Max(mainCamera.nearClipPlane + 0.01f, planeDistance);
 		float width = Mathf.Abs(2f * dist * Mathf.Tan(fov / 2f));

@@ -3596,6 +3596,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8473951990962035321, guid: 558d64d9c40b1044d8b9c62d9020130b,
         type: 3}
+      propertyPath: mapWidth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8473951990962035321, guid: 558d64d9c40b1044d8b9c62d9020130b,
+        type: 3}
+      propertyPath: mapHeight
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8473951990962035321, guid: 558d64d9c40b1044d8b9c62d9020130b,
+        type: 3}
       propertyPath: animationRate
       value: 0.099
       objectReference: {fileID: 0}
@@ -3868,11 +3878,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4902743674910450, guid: def039cf8b831b941b404f545d83c8da, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.97347
+      objectReference: {fileID: 0}
+    - target: {fileID: 4902743674910450, guid: def039cf8b831b941b404f545d83c8da, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 4902743674910450, guid: def039cf8b831b941b404f545d83c8da, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.9851725
       objectReference: {fileID: 0}
     - target: {fileID: 4902743674910450, guid: def039cf8b831b941b404f545d83c8da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.3332028
+      value: -3.534
       objectReference: {fileID: 0}
     - target: {fileID: 4902743674910450, guid: def039cf8b831b941b404f545d83c8da, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3880,7 +3898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4902743674910450, guid: def039cf8b831b941b404f545d83c8da, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.2962642
+      value: 1.63
       objectReference: {fileID: 0}
     - target: {fileID: 4902743674910450, guid: def039cf8b831b941b404f545d83c8da, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4616,8 +4634,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5210934819903093445, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5210934819903093445, guid: 4cad9378a4767ef409b3efa1aa359026,
+        type: 3}
       propertyPath: m_TagString
-      value: zecanvas
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 5210934819903093445, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
@@ -4642,6 +4665,11 @@ PrefabInstance:
     - target: {fileID: 5249628632458078606, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598777244190896420, guid: 4cad9378a4767ef409b3efa1aa359026,
+        type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6598777244190896420, guid: 4cad9378a4767ef409b3efa1aa359026,
@@ -4688,7 +4716,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 377654321}
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onHeldUpdate.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -4712,7 +4740,7 @@ PrefabInstance:
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: set_enabled
+      value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
@@ -4733,7 +4761,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onDetachFromHand.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 377654321}
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onHeldUpdate.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -4752,7 +4780,7 @@ PrefabInstance:
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
       propertyPath: onDetachFromHand.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: set_enabled
+      value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 8213974005222504989, guid: 4cad9378a4767ef409b3efa1aa359026,
         type: 3}
@@ -6473,7 +6501,7 @@ PrefabInstance:
     - target: {fileID: 2276472334975294449, guid: dfda9981a0835c74fa00a26b4725db9e,
         type: 3}
       propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2276472334975294449, guid: dfda9981a0835c74fa00a26b4725db9e,
         type: 3}
@@ -6482,13 +6510,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2276472334975294449, guid: dfda9981a0835c74fa00a26b4725db9e,
         type: 3}
-      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 7400000, guid: 6acce914e1aff0a49b402fc78631a1b1, type: 2}
+      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenBook
+      objectReference: {fileID: 0}
     - target: {fileID: 2276472334975294449, guid: dfda9981a0835c74fa00a26b4725db9e,
         type: 3}
-      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
+      propertyPath: onPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3527687506562440885, guid: dfda9981a0835c74fa00a26b4725db9e,
         type: 3}
