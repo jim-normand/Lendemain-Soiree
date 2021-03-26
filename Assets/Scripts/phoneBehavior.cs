@@ -78,7 +78,6 @@ public class PhoneBehavior : MonoBehaviour
         // Si on prend le smartphone, alors la roue de choix du code apparaît
         if (isHeld)
         {
-            ShowCodeScreen();
             // On récupère la position du pouce sur le trackpad de la main droite
             if (SteamVR.connected[0] && !SteamVR.initializing && !SteamVR.calibrating && !SteamVR.outOfRange)
             {
@@ -122,9 +121,6 @@ public class PhoneBehavior : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.Backspace))
                     AddNumber(9);
             }
-        } else
-        {
-            ShowLockedScreen();
         }
 
     }
@@ -135,7 +131,7 @@ public class PhoneBehavior : MonoBehaviour
 
         screens[0] = transform.GetChild(0).gameObject;
 
-        screens[1] = new GameObject("Screen locked");
+        screens[1] = GameObject.Find("Screen locked");
         screens[1].transform.SetParent(this.transform);
         screens[1].transform.localPosition = 0.0074f * Vector3.up;
         screens[1].transform.localRotation = Quaternion.identity;
@@ -180,16 +176,17 @@ public class PhoneBehavior : MonoBehaviour
         canvas.transform.GetChild(1).localScale = new Vector3(screenWidth / 100f, screenHeight / 100f, 1);
     }
 
-    private void ShowLockedScreen()
+    public void ShowLockedScreen()
     {
         if (screens[0].activeSelf)
         {
             screens[0].SetActive(false);
             screens[1].SetActive(true);
+            Debug.Log("lock");
         }
     }
 
-    private void ShowCodeScreen()
+    public void ShowCodeScreen()
     {
         if (screens[1].activeSelf)
         {
