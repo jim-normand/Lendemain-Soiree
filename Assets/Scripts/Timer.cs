@@ -4,17 +4,22 @@ using UnityEngine.EventSystems;
 
 public class Timer : MonoBehaviour
 {
+    [Tooltip("Number of minutes before end game.")]
     public float numberOfMinutes;
     private float initialTime;
     private float timeLeft;
     private bool over;
 
+    private Text timeText;
+
     public EventTrigger.TriggerEvent onGameOver;
+
     // Start is called before the first frame update
     void Start()
     {
         over = false;
         numberOfMinutes = Mathf.Floor(numberOfMinutes);
+        timeText = GetComponent<Text>();
         initialTime = Time.realtimeSinceStartup;
     }
 
@@ -40,29 +45,30 @@ public class Timer : MonoBehaviour
         {
             if (seconds >= 10)
             {
-                this.GetComponent<Text>().text = minutes.ToString() + " : " + seconds.ToString();
+                timeText.text = minutes.ToString() + " : " + seconds.ToString();
             }
             else
             {
-                this.GetComponent<Text>().text = minutes.ToString() + " : 0" + seconds.ToString();
+                timeText.text = minutes.ToString() + " : 0" + seconds.ToString();
             }
         }
         else
         {
-            this.GetComponent<Text>().fontSize = 40;
-            this.GetComponent<Text>().color = Color.red;
+            timeText.fontSize = 40;
+            timeText.color = Color.red;
             if (seconds >= 10)
             {
-                this.GetComponent<Text>().text = seconds.ToString();
+                timeText.text = seconds.ToString();
             }
             else
             {
-                this.GetComponent<Text>().text = "0" + seconds.ToString();
+                timeText.text = "0" + seconds.ToString();
             }
         }
-        if (Mathf.RoundToInt(timeLeft) <= 0)
+        if (timeLeft <= 0)
         {
-            this.GetComponent<Text>().text = "00:00";
+            timeText.text = "00:00";
+            // ?
             onGameOver.Invoke(null);
             over = true;
 
