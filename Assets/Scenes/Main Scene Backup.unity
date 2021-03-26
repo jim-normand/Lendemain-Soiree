@@ -828,7 +828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 959e8e73f69f67441a1a6fdd3ce5656f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfMinutes: 1
+  numberOfMinutes: 15
   onGameOver:
     m_PersistentCalls:
       m_Calls:
@@ -8661,6 +8661,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2523112395110147834, guid: 367cd2a9b3717e943a24acab276e8239,
+        type: 3}
+      propertyPath: key
+      value: 
+      objectReference: {fileID: 1392166576}
     - target: {fileID: 9212408728178041207, guid: 367cd2a9b3717e943a24acab276e8239,
         type: 3}
       propertyPath: m_RootOrder
