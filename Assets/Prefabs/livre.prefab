@@ -200,7 +200,6 @@ GameObject:
   - component: {fileID: 4520491186335281124}
   - component: {fileID: 2276472334975294449}
   - component: {fileID: 6149526925443030292}
-  - component: {fileID: 1103890289931290827}
   m_Layer: 0
   m_Name: livre
   m_TagString: Untagged
@@ -355,29 +354,29 @@ MonoBehaviour:
   onPickUp:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1103890289931290827}
-        m_MethodName: OpenBook
-        m_Mode: 1
+      - m_Target: {fileID: 111130229135678542}
+        m_MethodName: CrossFade
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: bookOpen
           m_BoolArgument: 0
         m_CallState: 2
   onDetachFromHand:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1103890289931290827}
-        m_MethodName: CloseBook
-        m_Mode: 1
+      - m_Target: {fileID: 111130229135678542}
+        m_MethodName: CrossFade
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: bookClose
           m_BoolArgument: 0
         m_CallState: 2
   onHeldUpdate:
@@ -397,18 +396,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7416423, y: 0.12642643, z: 1.0477881}
   m_Center: {x: 0.0058211386, y: -0.020087302, z: -0.008894086}
---- !u!114 &1103890289931290827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1260507794963554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 190da6a08dfca5a46939e5295fe09be0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1300170203712666
 GameObject:
   m_ObjectHideFlags: 0

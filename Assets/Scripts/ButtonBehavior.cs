@@ -15,12 +15,6 @@ public class ButtonBehavior : MonoBehaviour
         Deselect();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     /// <summary>
     /// Change la variable qui vérifie si le bouton est sélectionné en true
     /// </summary>
