@@ -3,16 +3,21 @@ using Valve.VR.InteractionSystem;
 
 public class ChestBehavior : MonoBehaviour
 {
-    [Tooltip("The key to unlock the chest.")]
+    [Tooltip("The key that will be used as trigger.")]
     public GameObject key;
 
-    [Tooltip("Movable part of the chest.")]
     private CircularDrive chestTopDrive;
 
     // Start is called before the first frame update
     void Start()
     {
-        chestTopDrive = transform.parent.GetComponentInChildren<CircularDrive>();
+        chestTopDrive = transform.parent.GetComponentInChildren<CircularDrive>(true);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 
     private void OnTriggerEnter(Collider other)
