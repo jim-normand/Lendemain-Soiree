@@ -32,8 +32,9 @@ public class PhoneBehavior : MonoBehaviour
     private float espacementBoutons;
     private float rayonBoutons;
     public bool initWheelOK;
-    // Le code à trouver pour déverouiller
-    private string code; 
+    [SerializeField]
+    [Tooltip("Code to unlcok phone.")]
+    private string code = "4565"; 
     [Tooltip("Array of buttons prefabs")]
     public GameObject[] prefabButtons;
     [Tooltip("Array of buttons instances")]
@@ -54,7 +55,6 @@ public class PhoneBehavior : MonoBehaviour
         rayonBoutons = 0.1f;
 
         isHeld = false;
-        code = "6476";
         tryCode.text = "";
         initWheelOK = true;
 
