@@ -26,7 +26,7 @@ public class TextDisplay : MonoBehaviour
         if(firstText)
         {
             frameCounter++;
-            if(frameCounter > 600)
+            if(frameCounter > 400)
             {
                 textObjects[0].color = new Color(textObjects[0].color.r, textObjects[0].color.g, textObjects[0].color.b, textObjects[0].color.a - 0.003f);
                 if(textObjects[0].color.a <= 0)
