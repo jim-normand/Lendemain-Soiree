@@ -1,13 +1,13 @@
 # Projet COARV - "Lendemain de soirée" 
 
-<img width="1120" alt="iatk_menu" src="/docs/imgs/chambre.PNG">
+<img width="1120" alt="iatk_menu" src="/docs/imgs/Chambre.png">
 
 ## Prérequis 
 
 - Unity [2019.2.19f1](https://unity3d.com/fr/unity/whats-new/2019.2.19) 
 - SteamVR 
 - Casque HTC Vive 
-Le SteamVR doit être à jour sinon cela risque d'empêcher l'application de se lancer. L'application fonctionne uniquement avec les casques HTC Vive. 
+- SteamVR doit être à jour sinon cela risque d'empêcher l'application de se lancer. L'application fonctionne uniquement avec les casques HTC Vive. 
 
 ## Installation 
 
