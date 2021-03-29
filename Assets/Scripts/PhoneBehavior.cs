@@ -34,7 +34,7 @@ public class PhoneBehavior : MonoBehaviour
     public bool initWheelOK;
     [SerializeField]
     [Tooltip("Code to unlcok phone.")]
-    private string code = "4565"; 
+    private string code = "4656"; 
     [Tooltip("Array of buttons prefabs")]
     public GameObject[] prefabButtons;
     [Tooltip("Array of buttons instances")]
