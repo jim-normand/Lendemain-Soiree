@@ -2,13 +2,13 @@
   "source": "Unity",
   "applications": [
     {
-      "app_key": "application.generated.unity.conav_unity.exe",
+      "app_key": "application.generated.unity.lendemaindesoirée.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "D:\\Niquez tous vos grandes daronnes\\VRtest\\actions.json",
+      "action_manifest_path": "C:\\Users\\hugof\\source\\repos\\jim-normand\\Lendemain-Soiree\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
-          "name": "VRtest [Testing]"
+          "name": "Lendemain de soirée [Testing]"
         }
       }
     }

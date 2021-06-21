@@ -89,11 +89,11 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Vector2 MenuScrolle
+        public virtual SteamVR_Action_Vector2 MenuScroll
         {
             get
             {
-                return SteamVR_Actions.default_MenuScrolle;
+                return SteamVR_Actions.default_MenuScroll;
             }
         }
         

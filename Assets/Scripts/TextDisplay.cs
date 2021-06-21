@@ -1,54 +1,53 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class TextDisplay : MonoBehaviour
 {
-    public Camera camera;
-    public float numberOfMinutes;
-
     Text[] textObjects;
 
     bool firstText = false;
-    int frameCounter = 0;
+    public EventTrigger.TriggerEvent onGameStart = null;
 
-    float initialTime;
-    float timeLeft;
+    [Tooltip("Time (in seconds) during which the text is displayed.")]
+    public float textDisplayDuration;
+    private float startTime;
 
-    bool timerRunning = true;
+    private Color initialColor;
+    private GameObject mainCamera;
 
     // Start is called before the first frame update
     void Start()
     {
         textObjects = gameObject.GetComponentsInChildren<Text>();
-        
+        initialColor = textObjects[0].color;
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        transform.SetParent(mainCamera.transform);
+        transform.localPosition = mainCamera.GetComponent<Camera>().nearClipPlane * 1.1f * Vector3.forward;
+        transform.localRotation = Quaternion.identity;
+        // Better use camera characteristics
+        transform.localScale = .0001f * Vector3.one;
+
         StartGame();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //transform.position = camera.transform.position + 4.0f * camera.transform.forward;
-
-        if(firstText)
+        if (firstText)
         {
-            frameCounter++;
-            if(frameCounter > 600)
+            if(Time.time < startTime + textDisplayDuration)
             {
-                textObjects[0].color = new Color(textObjects[0].color.r, textObjects[0].color.g, textObjects[0].color.b, textObjects[0].color.a - 0.003f);
-                if(textObjects[0].color.a <= 0)
-                {
-                    frameCounter = 0;
-                    textObjects[0].text = "";
-                    textObjects[0].color = new Color(textObjects[0].color.r, textObjects[0].color.g, textObjects[0].color.b, 1.0f);
-                    firstText = false;
-                    initialTime = Time.realtimeSinceStartup;
-                }
+                textObjects[0].color = Color.Lerp(initialColor, Color.clear, (Time.time - startTime - textDisplayDuration) / textDisplayDuration);
+            } 
+            else
+            {
+                textObjects[0].text = "";
+                textObjects[0].color = initialColor;
+                firstText = false;
+                if (onGameStart != null)
+                    onGameStart.Invoke(null);
             }
-        } else if(timerRunning)
-        {
-            DisplayTime();
         }
     }
 
@@ -58,8 +57,9 @@ public class TextDisplay : MonoBehaviour
     private void StartGame()
     {
         textObjects[0].text = "Vous vous réveillez dans une chambre inconnue...";
-        textObjects[0].text += "Trouvez le code du portable de votre hôte pour effacer les photos compromettantes et enfuyez vous !";
+        textObjects[0].text += "\nTrouvez le code du portable de votre hôte pour effacer les photos compromettantes et enfuyez vous !";
         firstText = true;
+        startTime = Time.time;
     }
 
     /// <summary>
@@ -68,49 +68,14 @@ public class TextDisplay : MonoBehaviour
     public void EndGame()
     {
         textObjects[0].fontSize = 40;
-        textObjects[0].color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+        textObjects[0].color = Color.green;
         textObjects[0].text = "Vous avez effacé toutes les photos comprometantes !";
-        timerRunning = false;
     }
 
-    /// <summary>
-    /// Affiche le chronomètre du temps restant pour l'escape game
-    /// </summary>
-    private void DisplayTime()
+    public void OnGameOver(BaseEventData arg)
     {
-        float timeSinceBeginning = Time.realtimeSinceStartup - initialTime;
-        timeLeft = 60 * numberOfMinutes - timeSinceBeginning;
-        int minutes = (Mathf.CeilToInt(timeLeft) - Mathf.CeilToInt(timeLeft) % 60) / 60;
-        int seconds = Mathf.CeilToInt(timeLeft) % 60;
-        if (minutes > 0)
-        {
-            if (seconds >= 10)
-            {
-                textObjects[1].text = minutes.ToString() + " : " + seconds.ToString();
-            }
-            else
-            {
-                textObjects[1].text = minutes.ToString() + " : 0" + seconds.ToString();
-            }
-        } else
-        {
-            textObjects[1].fontSize = 40;
-            textObjects[1].color = Color.red;
-            if (seconds >= 10)
-            {
-                textObjects[1].text = seconds.ToString();
-            }
-            else
-            {
-                textObjects[1].text = "0" + seconds.ToString();
-            }
-        }
-        if(Mathf.RoundToInt(timeLeft) <= 0)
-        {
-            textObjects[1].text = "";
-            textObjects[0].text = "Vous avez perdu !";
-            textObjects[0].fontSize = 50;
-            textObjects[0].color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-        }
+        textObjects[0].text = "Vous avez perdu !";
+        textObjects[0].fontSize = 50;
+        textObjects[0].color = Color.red;
     }
 }
